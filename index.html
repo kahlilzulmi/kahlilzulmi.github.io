@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahlil Gibran Al Zulmi | Portfolio</title>
+    <style>
+        :root {
+            --primary: #2d3436;
+            --secondary: #0984e3;
+            --accent: #00cec9;
+            --bg-color: #f5f6fa;
+            --text-color: #2d3436;
+            --btn-bg: #dfe6e9;
+            --btn-active: #0984e3;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+        header p {
+            font-size: 1.2rem;
+            color: #dfe6e9;
+            max-width: 700px;
+            margin: 1rem auto;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            font-size: 2rem;
+        }
+        
+        /* Filter Buttons */
+        .filter-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .filter-btn {
+            background-color: var(--btn-bg);
+            border: none;
+            padding: 0.5rem 1rem;
+            margin: 0.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+        .filter-btn:hover {
+            background-color: #b2bec3;
+        }
+        .filter-btn.active {
+            background-color: var(--btn-active);
+            color: white;
+        }
+
+        /* Grid & Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        .card.hidden {
+            display: none;
+        }
+        .card h3 {
+            color: var(--secondary);
+            margin-top: 0;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        .tags {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .tag {
+            background: var(--btn-bg);
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary);
+            color: white;
+            margin-top: 3rem;
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Kahlil Gibran Al Zulmi</h1>
+    <p>Asisten Peneliti & Pengembang Multidisiplin. Menjembatani AI, Teknologi Medis, Desain Antarmuka, dan Eksplorasi Kreatif melalui kolaborasi hibrida antara manusia dan mesin.</p>
+</header>
+
+<div class="container">
+    <h2 class="section-title">Portofolio Keahlian</h2>
+    
+    <!-- Filter Section -->
+    <div class="filter-container">
+        <button class="filter-btn active" data-filter="all">Semua</button>
+        <button class="filter-btn" data-filter="tech">Teknologi & Riset</button>
+        <button class="filter-btn" data-filter="collab">Kolaborasi & Tim</button>
+        <button class="filter-btn" data-filter="creative">Kreatif & Personal</button>
+    </div>
+
+    <div class="grid">
+        
+        <!-- Kolaborasi Manusia & AI -->
+        <div class="card" data-category="tech collab">
+            <h3>Kolaborasi Hibrida: Manusia & AI</h3>
+            <p>Berpengalaman menjembatani komunikasi teknis dan non-teknis dengan rekan peneliti, dosen pembimbing, dan tim pengembang. Sekaligus mengintegrasikan alur kerja dengan asisten AI tingkat lanjut (seperti Claude, Perplexity, dan Google AI) untuk mengakselerasi penulisan kode, pemrosesan bahasa alami (NLP), dan eksplorasi literatur medis.</p>
+            <div class="tags">
+                <span class="tag">AI Pair Programming</span>
+                <span class="tag">Team Coordination</span>
+                <span class="tag">Prompt Engineering</span>
+                <span class="tag">Academic Mentoring</span>
+            </div>
+        </div>
+
+        <!-- AI & Rekayasa Perangkat Lunak -->
+        <div class="card" data-category="tech">
+            <h3>AI & Software Engineering</h3>
+            <p>Membangun sistem cerdas dan arsitektur <i>full-stack</i>. Terlibat aktif dalam pengembangan aplikasi <i>telemedicine</i>, sistem <i>chatbot</i> kesehatan mental, serta analisis data pelacakan penglihatan (<i>eye-tracking</i>) untuk riset kognitif berkinerja tinggi.</p>
+            <div class="tags">
+                <span class="tag">Python</span>
+                <span class="tag">Vue.js / Vite</span>
+                <span class="tag">OpenCV</span>
+                <span class="tag">C# / .NET</span>
+                <span class="tag">ROS Noetic</span>
+            </div>
+        </div>
+
+        <!-- UI/UX Prototyping -->
+        <div class="card" data-category="tech collab">
+            <h3>UI/UX Prototyping</h3>
+            <p>Menerapkan prinsip Gestalt dan <i>Design Thinking</i> untuk menciptakan antarmuka yang intuitif. Memfasilitasi ideasi tim menggunakan papan kerja kolaboratif untuk membangun purwarupa sistem informasi rumah sakit dan pemantauan kesehatan digital.</p>
+            <div class="tags">
+                <span class="tag">Figma</span>
+                <span class="tag">FigJam</span>
+                <span class="tag">Wireframing</span>
+                <span class="tag">User Research</span>
+            </div>
+        </div>
+
+        <!-- Audio Production -->
+        <div class="card" data-category="creative">
+            <h3>Produksi Audio Kreatif</h3>
+            <p>Mengeksplorasi produksi musik amatir dengan pendekatan teknis. Terbiasa melakukan perekaman vokal, perakitan <i>track</i> orisinal, hingga proses penyuntingan menggunakan metode <i>comping</i> untuk menyempurnakan proyek EP independen.</p>
+            <div class="tags">
+                <span class="tag">LMMS</span>
+                <span class="tag">Audacity</span>
+                <span class="tag">Vocal Editing</span>
+            </div>
+        </div>
+        
+        <!-- Beyond the Screen -->
+        <div class="card" data-category="creative">
+            <h3>Di Luar Layar</h3>
+            <p>Menjaga stamina mental dan fisik melalui gaya hidup aktif dan hiburan interaktif. Mampu menerapkan disiplin dari lintasan lari dunia nyata ke dalam ketekunan penyelesaian proyek, sambil sesekali memacu adrenalin di sirkuit balap virtual.</p>
+            <div class="tags">
+                <span class="tag">Endurance Running (5K)</span>
+                <span class="tag">Need For Speed</span>
+                <span class="tag">Forza Horizon</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <p>Mari berkolaborasi. Temukan kode saya di <a href="#">GitHub</a> atau hubungi saya untuk diskusi teknis dan riset.</p>
+</footer>
+
+<script>
+    // JavaScript untuk fitur filter kategori
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.card');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Hapus class active dari semua tombol
+            filterBtns.forEach(b => b.classList.remove('active'));
+            // Tambahkan class active ke tombol yang diklik
+            btn.classList.add('active');
+
+            const filterValue = btn.getAttribute('data-filter');
+
+            cards.forEach(card => {
+                const categories = card.getAttribute('data-category').split(' ');
+                
+                if (filterValue === 'all' || categories.includes(filterValue)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
