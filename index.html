@@ -1,248 +1,432 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kahlil Gibran Al Zulmi | Portfolio</title>
+    
+    <!-- Load Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        accent: '#007AE1',    // Aksen Default (Windows Blue)
+                        secondary: '#12B0A2', // Warna FKK ITS (Teal)
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --primary: #2d3436;
-            --secondary: #0984e3;
-            --accent: #00cec9;
-            --bg-color: #f5f6fa;
-            --text-color: #2d3436;
-            --btn-bg: #dfe6e9;
-            --btn-active: #0984e3;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            letter-spacing: 1px;
-        }
-        header p {
-            font-size: 1.2rem;
-            color: #dfe6e9;
-            max-width: 700px;
-            margin: 1rem auto;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-        .section-title {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: var(--secondary);
-            font-size: 2rem;
+        /* Custom scroll behavior and animations */
+        html { scroll-behavior: smooth; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out forwards; opacity: 0; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Filter Buttons */
-        .filter-container {
-            text-align: center;
-            margin-bottom: 2rem;
+        /* 3D Tilt Card Base Styles */
+        .portfolio-card {
+            transform-style: preserve-3d;
+            will-change: transform;
+            /* Smooth return to 0 when mouse leaves */
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease, opacity 0.3s ease; 
         }
-        .filter-btn {
-            background-color: var(--btn-bg);
-            border: none;
-            padding: 0.5rem 1rem;
-            margin: 0.2rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--text-color);
-            transition: all 0.3s ease;
+        
+        /* Cursor Blinker for Typewriter */
+        .blinker {
+            animation: blink 1s step-end infinite;
         }
-        .filter-btn:hover {
-            background-color: #b2bec3;
+        @keyframes blink {
+            50% { opacity: 0; }
         }
-        .filter-btn.active {
-            background-color: var(--btn-active);
-            color: white;
-        }
-
-        /* Grid & Cards */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-        }
-        .card.hidden {
-            display: none;
-        }
-        .card h3 {
-            color: var(--secondary);
-            margin-top: 0;
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 0.5rem;
-            display: inline-block;
-        }
-        .tags {
-            margin-top: 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        .tag {
-            background: var(--btn-bg);
-            padding: 0.2rem 0.6rem;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background-color: var(--primary);
-            color: white;
-            margin-top: 3rem;
-        }
-        a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
+        
+        /* Easter Egg Animation */
+        .car-race {
+            position: fixed;
+            bottom: 5%;
+            left: -100px;
+            font-size: 4rem;
+            z-index: 9999;
+            pointer-events: none;
+            transition: left 2.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
-<body>
+<body class="dark bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 font-sans antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col transition-colors duration-300 overflow-x-hidden">
 
-<header>
-    <h1>Kahlil Gibran Al Zulmi</h1>
-    <p>Asisten Peneliti & Pengembang Multidisiplin. Menjembatani AI, Teknologi Medis, Desain Antarmuka, dan Eksplorasi Kreatif melalui kolaborasi hibrida antara manusia dan mesin.</p>
-</header>
+    <nav class="fixed w-full top-0 z-50 p-4 flex justify-end items-center bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm transition-colors duration-300 border-b border-transparent dark:border-gray-800">
+        <div class="flex items-center space-x-4">
+            
+            <!-- Theme Toggle -->
+            <button id="theme-toggle" onclick="toggleTheme()" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors" aria-label="Toggle Theme">
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 3.22a1 1 0 011.415 0l.708.708a1 1 0 01-1.414 1.414l-.708-.708a1 1 0 010-1.414zM16 10a1 1 0 011 1h1a1 1 0 110-2h-1a1 1 0 01-1 1zm-3.22 4.22a1 1 0 010 1.415l-.708.708a1 1 0 01-1.414-1.414l.708-.708a1 1 0 011.414 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-3.22a1 1 0 01-1.415 0l-.708-.708a1 1 0 011.414-1.414l.708.708a1 1 0 010 1.414zM4 10a1 1 0 01-1-1H2a1 1 0 110 2h1a1 1 0 011-1zm3.22-4.22a1 1 0 010-1.415l.708-.708a1 1 0 011.414 1.414l-.708.708a1 1 0 01-1.414 0zM10 5a5 5 0 100 10 5 5 0 000-10zM8 10a2 2 0 114 0 2 2 0 01-4 0z"></path></svg>
+                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            </button>
 
-<div class="container">
-    <h2 class="section-title">Portofolio Keahlian</h2>
-    
-    <!-- Filter Section -->
-    <div class="filter-container">
-        <button class="filter-btn active" data-filter="all">Semua</button>
-        <button class="filter-btn" data-filter="tech">Teknologi & Riset</button>
-        <button class="filter-btn" data-filter="collab">Kolaborasi & Tim</button>
-        <button class="filter-btn" data-filter="creative">Kreatif & Personal</button>
-    </div>
+            <!-- Language Toggle -->
+            <div class="flex items-center space-x-1 bg-gray-200 dark:bg-gray-800 rounded-full p-1 border border-gray-300 dark:border-gray-700 transition-colors duration-300">
+                <button id="btn-en" onclick="setLanguage('en')" class="px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 bg-accent text-white shadow-md">EN</button>
+                <button id="btn-id" onclick="setLanguage('id')" class="px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">ID</button>
+            </div>
+            
+        </div>
+    </nav>
 
-    <div class="grid">
+    <header class="bg-gray-900 dark:bg-black text-white pt-32 pb-20 px-6 text-center shadow-lg transition-colors duration-300 border-b border-gray-800 relative overflow-hidden">
+        <!-- Subtle background decoration -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-20 pointer-events-none">
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-accent rounded-full mix-blend-screen filter blur-3xl opacity-30"></div>
+            <div class="absolute top-1/2 -right-24 w-96 h-96 bg-secondary rounded-full mix-blend-screen filter blur-3xl opacity-30"></div>
+        </div>
+
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4 fade-in">Kahlil Gibran Al Zulmi</h1>
+            
+            <!-- Typewriter Element -->
+            <div class="text-xl md:text-2xl font-medium text-secondary mb-6 fade-in" style="animation-delay: 0.1s; min-height: 2rem;">
+                <span id="typewriter-text"></span><span class="text-accent blinker">|</span>
+            </div>
+
+            <p data-i18n="hero_desc" class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed fade-in" style="animation-delay: 0.2s;">
+                Bridging AI, Medical Tech, Interface Design, and Creative Exploration through human-machine hybrid collaboration.
+            </p>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-6 py-12 w-full z-10">
+        <h2 data-i18n="section_title" class="text-3xl font-bold text-center text-accent dark:text-accent mb-10 fade-in" style="animation-delay: 0.3s;">
+            Portfolio of Expertise
+        </h2>
         
-        <!-- Kolaborasi Manusia & AI -->
-        <div class="card" data-category="tech collab">
-            <h3>Kolaborasi Hibrida: Manusia & AI</h3>
-            <p>Berpengalaman menjembatani komunikasi teknis dan non-teknis dengan rekan peneliti, dosen pembimbing, dan tim pengembang. Sekaligus mengintegrasikan alur kerja dengan asisten AI tingkat lanjut (seperti Claude, Perplexity, dan Google AI) untuk mengakselerasi penulisan kode, pemrosesan bahasa alami (NLP), dan eksplorasi literatur medis.</p>
-            <div class="tags">
-                <span class="tag">AI Pair Programming</span>
-                <span class="tag">Team Coordination</span>
-                <span class="tag">Prompt Engineering</span>
-                <span class="tag">Academic Mentoring</span>
-            </div>
+        <div class="flex flex-wrap justify-center gap-3 mb-12 fade-in" style="animation-delay: 0.4s;">
+            <button class="filter-btn active px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-accent text-white shadow-md hover:scale-105" data-filter="all">
+                <span data-i18n="filter_all">All</span>
+            </button>
+            <button class="filter-btn px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 hover:scale-105" data-filter="tech">
+                <span data-i18n="filter_tech">Tech & Research</span>
+            </button>
+            <button class="filter-btn px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 hover:scale-105" data-filter="collab">
+                <span data-i18n="filter_collab">Collaboration & Team</span>
+            </button>
+            <button class="filter-btn px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 hover:scale-105" data-filter="creative">
+                <span data-i18n="filter_creative">Creative & Personal</span>
+            </button>
         </div>
 
-        <!-- AI & Rekayasa Perangkat Lunak -->
-        <div class="card" data-category="tech">
-            <h3>AI & Software Engineering</h3>
-            <p>Membangun sistem cerdas dan arsitektur <i>full-stack</i>. Terlibat aktif dalam pengembangan aplikasi <i>telemedicine</i>, sistem <i>chatbot</i> kesehatan mental, serta analisis data pelacakan penglihatan (<i>eye-tracking</i>) untuk riset kognitif berkinerja tinggi.</p>
-            <div class="tags">
-                <span class="tag">Python</span>
-                <span class="tag">Vue.js / Vite</span>
-                <span class="tag">OpenCV</span>
-                <span class="tag">C# / .NET</span>
-                <span class="tag">ROS Noetic</span>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 fade-in" style="animation-delay: 0.5s;" id="portfolio-grid">
+            
+            <!-- Hybrid Collaboration -->
+            <div class="portfolio-card bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm hover:shadow-xl border border-gray-200 dark:border-gray-700 flex flex-col h-full cursor-default" data-category="tech collab">
+                <h3 data-i18n="card1_title" class="text-xl font-bold text-secondary dark:text-secondary mb-3 border-b-2 border-accent pb-2 inline-block self-start">Hybrid Collaboration: Human & AI</h3>
+                <p data-i18n="card1_desc" class="text-gray-600 dark:text-gray-400 mb-6 flex-grow">Experienced in bridging technical and non-technical communication with fellow researchers, academic advisors, and development teams. Simultaneously integrating workflows with advanced AI assistants (like Claude, Perplexity, and Google AI) to accelerate coding, NLP, and medical literature exploration.</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">AI Pair Programming</span>
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">Team Coordination</span>
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">Prompt Engineering</span>
+                </div>
             </div>
-        </div>
 
-        <!-- UI/UX Prototyping -->
-        <div class="card" data-category="tech collab">
-            <h3>UI/UX Prototyping</h3>
-            <p>Menerapkan prinsip Gestalt dan <i>Design Thinking</i> untuk menciptakan antarmuka yang intuitif. Memfasilitasi ideasi tim menggunakan papan kerja kolaboratif untuk membangun purwarupa sistem informasi rumah sakit dan pemantauan kesehatan digital.</p>
-            <div class="tags">
-                <span class="tag">Figma</span>
-                <span class="tag">FigJam</span>
-                <span class="tag">Wireframing</span>
-                <span class="tag">User Research</span>
+            <!-- AI & Software Eng -->
+            <div class="portfolio-card bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm hover:shadow-xl border border-gray-200 dark:border-gray-700 flex flex-col h-full cursor-default" data-category="tech">
+                <h3 class="text-xl font-bold text-secondary dark:text-secondary mb-3 border-b-2 border-accent pb-2 inline-block self-start">AI & Software Engineering</h3>
+                <p data-i18n="card2_desc" class="text-gray-600 dark:text-gray-400 mb-6 flex-grow">Building intelligent systems and full-stack architectures. Actively involved in developing telemedicine apps, mental health chatbot systems, and eye-tracking data analysis for high-performance cognitive research.</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">Python</span>
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">Vue.js / Vite</span>
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">OpenCV</span>
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">ROS Noetic</span>
+                </div>
             </div>
-        </div>
 
-        <!-- Audio Production -->
-        <div class="card" data-category="creative">
-            <h3>Produksi Audio Kreatif</h3>
-            <p>Mengeksplorasi produksi musik amatir dengan pendekatan teknis. Terbiasa melakukan perekaman vokal, perakitan <i>track</i> orisinal, hingga proses penyuntingan menggunakan metode <i>comping</i> untuk menyempurnakan proyek EP independen.</p>
-            <div class="tags">
-                <span class="tag">LMMS</span>
-                <span class="tag">Audacity</span>
-                <span class="tag">Vocal Editing</span>
+            <!-- UI/UX Prototyping -->
+            <div class="portfolio-card bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm hover:shadow-xl border border-gray-200 dark:border-gray-700 flex flex-col h-full cursor-default" data-category="tech collab">
+                <h3 class="text-xl font-bold text-secondary dark:text-secondary mb-3 border-b-2 border-accent pb-2 inline-block self-start">UI/UX Prototyping</h3>
+                <p data-i18n="card3_desc" class="text-gray-600 dark:text-gray-400 mb-6 flex-grow">Applying Gestalt principles and Design Thinking to create intuitive interfaces. Facilitating team ideation using collaborative whiteboards to build hospital information systems and digital health monitoring prototypes.</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">Figma</span>
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">FigJam</span>
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">Wireframing</span>
+                </div>
             </div>
+
+            <!-- Audio Production -->
+            <div class="portfolio-card bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm hover:shadow-xl border border-gray-200 dark:border-gray-700 flex flex-col h-full cursor-default" data-category="creative">
+                <h3 data-i18n="card4_title" class="text-xl font-bold text-secondary dark:text-secondary mb-3 border-b-2 border-accent pb-2 inline-block self-start">Creative Audio Production</h3>
+                <p data-i18n="card4_desc" class="text-gray-600 dark:text-gray-400 mb-6 flex-grow">Exploring amateur music production with a technical approach. Accustomed to vocal recording, assembling original tracks, and editing processes using the comping method to perfect independent EP projects.</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">LMMS</span>
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">Audacity</span>
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">Vocal Editing</span>
+                </div>
+            </div>
+            
+            <!-- Beyond the Screen -->
+            <div class="portfolio-card bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm hover:shadow-xl border border-gray-200 dark:border-gray-700 flex flex-col h-full cursor-default" data-category="creative">
+                <h3 data-i18n="card5_title" class="text-xl font-bold text-secondary dark:text-secondary mb-3 border-b-2 border-accent pb-2 inline-block self-start">Beyond the Screen</h3>
+                <p data-i18n="card5_desc" class="text-gray-600 dark:text-gray-400 mb-6 flex-grow">Maintaining mental and physical stamina through an active lifestyle and interactive entertainment. Applying discipline from the real-world running track to project completion perseverance, while occasionally pumping adrenaline on virtual race circuits.</p>
+                <div class="flex flex-wrap gap-2 mt-auto">
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">Endurance Running</span>
+                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-xs font-medium">Sim Racing</span>
+                </div>
+            </div>
+
         </div>
+    </main>
+
+    <footer class="bg-gray-900 dark:bg-black text-gray-400 py-8 text-center mt-auto border-t border-gray-800 transition-colors duration-300 z-10 relative">
+        <p class="max-w-xl mx-auto px-6">
+            <span data-i18n="footer_text">Let's collaborate. Find my code on</span> 
+            <a href="https://github.com/kahlilzulmi" target="_blank" class="text-accent hover:text-white transition-colors">GitHub</a> 
+            <span data-i18n="footer_text2">or contact me for technical and research discussions.</span>
+        </p>
+        <p class="text-xs text-gray-600 dark:text-gray-500 mt-4 font-mono">Tip: Type 'RACE' on your keyboard 🏎️</p>
+    </footer>
+
+    <script>
+        // --- 1. Internationalization (i18n) Data ---
+        const translations = {
+            en: {
+                hero_desc: "Bridging AI, Medical Tech, Interface Design, and Creative Exploration through human-machine hybrid collaboration.",
+                section_title: "Portfolio of Expertise",
+                filter_all: "All",
+                filter_tech: "Tech & Research",
+                filter_collab: "Collaboration & Team",
+                filter_creative: "Creative & Personal",
+                card1_title: "Hybrid Collaboration: Human & AI",
+                card1_desc: "Experienced in bridging technical and non-technical communication with fellow researchers, academic advisors, and development teams. Simultaneously integrating workflows with advanced AI assistants (like Claude, Perplexity, and Google AI) to accelerate coding, NLP, and medical literature exploration.",
+                card2_desc: "Building intelligent systems and full-stack architectures. Actively involved in developing telemedicine apps, mental health chatbot systems, and eye-tracking data analysis for high-performance cognitive research.",
+                card3_desc: "Applying Gestalt principles and Design Thinking to create intuitive interfaces. Facilitating team ideation using collaborative whiteboards to build hospital information systems and digital health monitoring prototypes.",
+                card4_title: "Creative Audio Production",
+                card4_desc: "Exploring amateur music production with a technical approach. Accustomed to vocal recording, assembling original tracks, and editing processes using the comping method to perfect independent EP projects.",
+                card5_title: "Beyond the Screen",
+                card5_desc: "Maintaining mental and physical stamina through an active lifestyle and interactive entertainment. Applying discipline from the real-world running track to project completion perseverance, while occasionally pumping adrenaline on virtual race circuits.",
+                footer_text: "Let's collaborate. Find my code on",
+                footer_text2: "or contact me for technical and research discussions."
+            },
+            id: {
+                hero_desc: "Menjembatani AI, Teknologi Medis, Desain Antarmuka, dan Eksplorasi Kreatif melalui kolaborasi hibrida antara manusia dan mesin.",
+                section_title: "Portofolio Keahlian",
+                filter_all: "Semua",
+                filter_tech: "Teknologi & Riset",
+                filter_collab: "Kolaborasi & Tim",
+                filter_creative: "Kreatif & Personal",
+                card1_title: "Kolaborasi Hibrida: Manusia & AI",
+                card1_desc: "Berpengalaman menjembatani komunikasi teknis dan non-teknis dengan rekan peneliti, dosen pembimbing, dan tim pengembang. Sekaligus mengintegrasikan alur kerja dengan asisten AI tingkat lanjut (seperti Claude, Perplexity, dan Google AI) untuk mengakselerasi penulisan kode, NLP, dan eksplorasi literatur medis.",
+                card2_desc: "Membangun sistem cerdas dan arsitektur full-stack. Terlibat aktif dalam pengembangan aplikasi telemedicine, sistem chatbot kesehatan mental, serta analisis data pelacakan penglihatan (eye-tracking) untuk riset kognitif berkinerja tinggi.",
+                card3_desc: "Menerapkan prinsip Gestalt dan Design Thinking untuk menciptakan antarmuka yang intuitif. Memfasilitasi ideasi tim menggunakan papan kerja kolaboratif untuk membangun purwarupa sistem informasi rumah sakit dan pemantauan kesehatan digital.",
+                card4_title: "Produksi Audio Kreatif",
+                card4_desc: "Mengeksplorasi produksi musik amatir dengan pendekatan teknis. Terbiasa melakukan perekaman vokal, perakitan track orisinal, hingga proses penyuntingan menggunakan metode comping untuk menyempurnakan proyek EP independen.",
+                card5_title: "Di Luar Layar",
+                card5_desc: "Menjaga stamina mental dan fisik melalui gaya hidup aktif dan hiburan interaktif. Mampu menerapkan disiplin dari lintasan lari dunia nyata ke dalam ketekunan penyelesaian proyek, sambil sesekali memacu adrenalin di sirkuit balap virtual.",
+                footer_text: "Mari berkolaborasi. Temukan kode saya di",
+                footer_text2: "atau hubungi saya untuk diskusi teknis dan riset."
+            }
+        };
+
+        // --- 2. Typewriter Effect Logic ---
+        const typeRoles = {
+            en: ["Multidisciplinary Developer.", "Medical Tech Researcher.", "UI/UX Prototyper.", "Amateur Audio Producer."],
+            id: ["Pengembang Multidisiplin.", "Peneliti Teknologi Medis.", "Perancang UI/UX.", "Produser Audio Amatir."]
+        };
         
-        <!-- Beyond the Screen -->
-        <div class="card" data-category="creative">
-            <h3>Di Luar Layar</h3>
-            <p>Menjaga stamina mental dan fisik melalui gaya hidup aktif dan hiburan interaktif. Mampu menerapkan disiplin dari lintasan lari dunia nyata ke dalam ketekunan penyelesaian proyek, sambil sesekali memacu adrenalin di sirkuit balap virtual.</p>
-            <div class="tags">
-                <span class="tag">Endurance Running (5K)</span>
-                <span class="tag">Need For Speed</span>
-                <span class="tag">Forza Horizon</span>
-            </div>
-        </div>
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let currentLang = 'en';
 
-    </div>
-</div>
+        function typeWriter() {
+            const currentRoles = typeRoles[currentLang];
+            const currentText = currentRoles[roleIndex];
+            const textElement = document.getElementById('typewriter-text');
+            
+            if (!textElement) return;
 
-<footer>
-    <p>Mari berkolaborasi. Temukan kode saya di <a href="#">GitHub</a> atau hubungi saya untuk diskusi teknis dan riset.</p>
-</footer>
+            if (isDeleting) {
+                textElement.innerText = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                textElement.innerText = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
 
-<script>
-    // JavaScript untuk fitur filter kategori
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const cards = document.querySelectorAll('.card');
+            let typeSpeed = isDeleting ? 50 : 100;
 
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Hapus class active dari semua tombol
-            filterBtns.forEach(b => b.classList.remove('active'));
-            // Tambahkan class active ke tombol yang diklik
-            btn.classList.add('active');
+            if (!isDeleting && charIndex === currentText.length) {
+                typeSpeed = 2000; // Pause at end of word
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % currentRoles.length;
+                typeSpeed = 500; // Pause before typing next word
+            }
 
-            const filterValue = btn.getAttribute('data-filter');
+            setTimeout(typeWriter, typeSpeed);
+        }
 
-            cards.forEach(card => {
-                const categories = card.getAttribute('data-category').split(' ');
-                
-                if (filterValue === 'all' || categories.includes(filterValue)) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
+        // --- 3. Language & Theme Logic ---
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            // Reset typewriter when language changes
+            roleIndex = 0;
+            charIndex = 0;
+            isDeleting = false;
+            
+            const btnEn = document.getElementById('btn-en');
+            const btnId = document.getElementById('btn-id');
+            
+            if(lang === 'en') {
+                btnEn.className = "px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 bg-accent text-white shadow-md";
+                btnId.className = "px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer";
+            } else {
+                btnId.className = "px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 bg-accent text-white shadow-md";
+                btnEn.className = "px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer";
+            }
+
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.style.opacity = 0;
+                    setTimeout(() => {
+                        el.innerText = translations[lang][key];
+                        el.style.opacity = 1;
+                    }, 150);
                 }
             });
-        });
-    });
-</script>
+        }
 
+        let isDark = true;
+        function toggleTheme() {
+            isDark = !isDark;
+            updateThemeUI();
+        }
+
+        function updateThemeUI() {
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+            
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+            }
+        }
+
+        // --- 4. Portfolio Filter Logic ---
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const cards = document.querySelectorAll('.portfolio-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-accent', 'text-white', 'shadow-md', 'active');
+                    b.classList.add('bg-gray-200', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
+                });
+                btn.classList.remove('bg-gray-200', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
+                btn.classList.add('bg-accent', 'text-white', 'shadow-md', 'active');
+
+                const filterValue = btn.getAttribute('data-filter');
+                cards.forEach(card => {
+                    const categories = card.getAttribute('data-category').split(' ');
+                    if (filterValue === 'all' || categories.includes(filterValue)) {
+                        card.style.display = 'flex';
+                        setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'scale(1)'; }, 50);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'scale(0.95)';
+                        setTimeout(() => { card.style.display = 'none'; }, 300);
+                    }
+                });
+            });
+        });
+
+        // --- 5. 3D Tilt Effect on Cards ---
+        // Only apply on non-touch devices for better UX
+        if (window.matchMedia("(pointer: fine)").matches) {
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    // Remove the smooth transition momentarily so it tracks cursor perfectly
+                    card.style.transition = 'none';
+                    
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left; // x position within the element
+                    const y = e.clientY - rect.top;  // y position within the element
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    // Calculate rotation (max 10 degrees)
+                    const rotateX = ((y - centerY) / centerY) * -10;
+                    const rotateY = ((x - centerX) / centerX) * 10;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    // Restore smooth transition to snap back
+                    card.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease';
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            });
+        }
+
+        // --- 6. Secret Easter Egg (Konami Code Style: R-A-C-E) ---
+        const secretWord = ['r', 'a', 'c', 'e'];
+        let userInput = [];
+
+        window.addEventListener('keydown', (e) => {
+            userInput.push(e.key.toLowerCase());
+            userInput = userInput.slice(-secretWord.length); // Keep array length to 4
+            
+            if (userInput.join('') === secretWord.join('')) {
+                spawnRaceCar();
+                userInput = []; // Reset
+            }
+        });
+
+        function spawnRaceCar() {
+            const car = document.createElement('div');
+            car.innerText = '🏎️💨';
+            car.className = 'car-race';
+            document.body.appendChild(car);
+            
+            // Force reflow
+            void car.offsetWidth;
+            
+            // Trigger animation
+            car.style.left = '110vw';
+            
+            // Clean up after animation finishes
+            setTimeout(() => {
+                car.remove();
+            }, 3000);
+        }
+
+        // Initialize Everything
+        window.onload = () => {
+            setLanguage('en');
+            updateThemeUI();
+            setTimeout(typeWriter, 1000); // Start typing effect after 1s delay
+        };
+
+    </script>
 </body>
 </html>
