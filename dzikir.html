@@ -35,7 +35,13 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- Control Side Toggle (Left vs Right) -->
+        <button id="sideToggleBtn" onclick="toggleControlSide()" class="bg-emerald-800/80 hover:bg-emerald-900 text-emerald-100 text-xs px-2.5 py-1.5 rounded-lg font-medium transition flex items-center gap-1 border border-emerald-600/40" title="Tukar posisi tombol utama (Kiri/Kanan)">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+          <span id="sideModeLabel">Kiri</span>
+        </button>
+
         <!-- View Mode Toggle -->
         <button id="viewToggleBtn" onclick="toggleViewMode()" class="bg-emerald-800/80 hover:bg-emerald-900 text-emerald-100 text-xs px-2.5 py-1.5 rounded-lg font-medium transition flex items-center gap-1 border border-emerald-600/40">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
@@ -74,6 +80,22 @@
   </footer>
 
   <script>
+    // Shared Surah Definitions
+    const surahAlIkhlash = {
+      arabic: "بِسْمِ اللهِ الرَّحْمنِ الرَّحِيمِ\nقُلْ هُوَ اللَّهُ أَحَدٌ (١) اللَّهُ الصَّمَدُ (٢) لَمْ يَلِدْ وَلَمْ يُولَدْ (٣) وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ (٤)",
+      translation: "Katakanlah (Muhammad): 'Dia-lah Allah, Yang Maha Esa. Allah Rabb yang bergantung kepada-Nya segala urusan. (Allah) tidak beranak dan tidak pula diperanakkan. Dan tidak ada sesuatu pun yang setara dengan Dia.' (QS. Al-Ikhlash: 1-4)"
+    };
+
+    const surahAlFalaq = {
+      arabic: "بِسْمِ اللهِ الرَّحْمنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ الْفَلَقِ (١) مِن شَرِّ مَا خَلَقَ (٢) وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ (٣) وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ (٤) وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ (٥)",
+      translation: "Katakanlah: 'Aku berlindung kepada Rabb Yang Menguasai shubuh, dari kejahatan makhluk-Nya, dan dari kejahatan malam apabila telah gelap gulita, dan dari kejahatan (wanita-wanita) tukang sihir yang meniup pada buhul-buhul (talinya), dan dari kejahatan orang dengki bila ia dengki.' (QS. Al-Falaq: 1-5)"
+    };
+
+    const surahAnNaas = {
+      arabic: "بِسْمِ اللهِ الرَّحْمنِ الرَّحِيمِ\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ (١) مَلِكِ النَّاسِ (٢) إِلَٰهِ النَّاسِ (٣) مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ (٤) الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ (٥) مِنَ الْجِنَّةِ وَالنَّاسِ (٦)",
+      translation: "Katakanlah: 'Aku berlindung kepada Rabb manusia. Raja manusia. Sembahan manusia. Dari kejahatan (bisikan) syaitan yang bersembunyi, yang membisikkan (kejahatan) ke dalam dada manusia, dari (golongan) jin dan manusia.' (QS. An-Naas: 1-6)"
+    };
+
     // Full Data Extracted from Markdown Document
     const dzikirData = {
       shalat: [
@@ -141,10 +163,28 @@
           note: "Dibaca 1x menggenapkan 100"
         },
         {
-          id: "sh_5",
-          title: "Surat Al-Ikhlash, Al-Falaq, An-Naas",
-          arabic: "قُلْ هُوَ اللهُ أَحَدٌ... \nقُلْ أَعُوذُ بِرَبِّ الْفَلَقِ... \nقُلْ أَعُوذُ بِرَبِّ النَّاسِ...",
-          translation: "Membaca Surat Al-Ikhlash, Al-Falaq, dan An-Naas.",
+          id: "sh_5_ikhlas",
+          title: "Surat Al-Ikhlash",
+          arabic: surahAlIkhlash.arabic,
+          translation: surahAlIkhlash.translation,
+          citation: "HR. Abu Dawud (II/86) dan An-Nasa'i (III/68)",
+          defaultTarget: 1,
+          note: "Dibaca 1x setiap shalat fardhu, kecuali Maghrib & Subuh 3x"
+        },
+        {
+          id: "sh_5_falaq",
+          title: "Surat Al-Falaq",
+          arabic: surahAlFalaq.arabic,
+          translation: surahAlFalaq.translation,
+          citation: "HR. Abu Dawud (II/86) dan An-Nasa'i (III/68)",
+          defaultTarget: 1,
+          note: "Dibaca 1x setiap shalat fardhu, kecuali Maghrib & Subuh 3x"
+        },
+        {
+          id: "sh_5_naas",
+          title: "Surat An-Naas",
+          arabic: surahAnNaas.arabic,
+          translation: surahAnNaas.translation,
           citation: "HR. Abu Dawud (II/86) dan An-Nasa'i (III/68)",
           defaultTarget: 1,
           note: "Dibaca 1x setiap shalat fardhu, kecuali Maghrib & Subuh 3x"
@@ -188,10 +228,28 @@
           note: "Dibaca 1x"
         },
         {
-          id: "pg_2",
-          title: "Surat Al-Ikhlash, Al-Falaq, An-Naas",
-          arabic: "قُلْ هُوَ اللهُ أَحَدٌ... (٣×)\nقُلْ أَعُوذُ بِرَبِّ الْفَلَقِ... (٣×)\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ... (٣×)",
-          translation: "Membaca Surat Al-Ikhlash, Al-Falaq, dan An-Naas.",
+          id: "pg_2_ikhlas",
+          title: "Surat Al-Ikhlash",
+          arabic: surahAlIkhlash.arabic,
+          translation: surahAlIkhlash.translation,
+          citation: "HR. Abu Dawud (IV/322) dan At-Tirmidzi (V/567)",
+          defaultTarget: 3,
+          note: "Dibaca 3x"
+        },
+        {
+          id: "pg_2_falaq",
+          title: "Surat Al-Falaq",
+          arabic: surahAlFalaq.arabic,
+          translation: surahAlFalaq.translation,
+          citation: "HR. Abu Dawud (IV/322) dan At-Tirmidzi (V/567)",
+          defaultTarget: 3,
+          note: "Dibaca 3x"
+        },
+        {
+          id: "pg_2_naas",
+          title: "Surat An-Naas",
+          arabic: surahAnNaas.arabic,
+          translation: surahAnNaas.translation,
           citation: "HR. Abu Dawud (IV/322) dan At-Tirmidzi (V/567)",
           defaultTarget: 3,
           note: "Dibaca 3x"
@@ -316,10 +374,28 @@
           note: "Dibaca 1x"
         },
         {
-          id: "pt_2",
-          title: "Surat Al-Ikhlash, Al-Falaq, An-Naas",
-          arabic: "قُلْ هُوَ اللهُ أَحَدٌ... (٣×)\nقُلْ أَعُوذُ بِرَبِّ الْفَلَقِ... (٣×)\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ... (٣×)",
-          translation: "Membaca Surat Al-Ikhlash, Al-Falaq, dan An-Naas.",
+          id: "pt_2_ikhlas",
+          title: "Surat Al-Ikhlash",
+          arabic: surahAlIkhlash.arabic,
+          translation: surahAlIkhlash.translation,
+          citation: "HR. Abu Dawud (IV/322) dan At-Tirmidzi (V/567)",
+          defaultTarget: 3,
+          note: "Dibaca 3x"
+        },
+        {
+          id: "pt_2_falaq",
+          title: "Surat Al-Falaq",
+          arabic: surahAlFalaq.arabic,
+          translation: surahAlFalaq.translation,
+          citation: "HR. Abu Dawud (IV/322) dan At-Tirmidzi (V/567)",
+          defaultTarget: 3,
+          note: "Dibaca 3x"
+        },
+        {
+          id: "pt_2_naas",
+          title: "Surat An-Naas",
+          arabic: surahAnNaas.arabic,
+          translation: surahAnNaas.translation,
           citation: "HR. Abu Dawud (IV/322) dan At-Tirmidzi (V/567)",
           defaultTarget: 3,
           note: "Dibaca 3x"
@@ -402,6 +478,7 @@
     // State Management
     let currentTab = localStorage.getItem('dzikir_active_tab') || 'shalat';
     let isCompactView = localStorage.getItem('dzikir_view_mode') === 'compact';
+    let isControlOnLeft = localStorage.getItem('dzikir_control_side') !== 'right'; // default is left
     let userCounts = JSON.parse(localStorage.getItem('dzikir_counts') || '{}');
     let userTargets = JSON.parse(localStorage.getItem('dzikir_targets') || '{}');
     let editingTargetId = null;
@@ -411,6 +488,7 @@
     function saveState() {
       localStorage.setItem('dzikir_active_tab', currentTab);
       localStorage.setItem('dzikir_view_mode', isCompactView ? 'compact' : 'complete');
+      localStorage.setItem('dzikir_control_side', isControlOnLeft ? 'left' : 'right');
       localStorage.setItem('dzikir_counts', JSON.stringify(userCounts));
       localStorage.setItem('dzikir_targets', JSON.stringify(userTargets));
       updateOverallProgress();
@@ -463,6 +541,12 @@
       render();
     }
 
+    function toggleControlSide() {
+      isControlOnLeft = !isControlOnLeft;
+      saveState();
+      render();
+    }
+
     function speakArabic(text) {
       if (!synth) return;
       synth.cancel();
@@ -492,8 +576,9 @@
     }
 
     function render() {
-      // Toggle button label
+      // Toggle button labels
       document.getElementById('viewModeLabel').textContent = isCompactView ? 'Renggang' : 'Ringkas';
+      document.getElementById('sideModeLabel').textContent = isControlOnLeft ? 'Kiri' : 'Kanan';
 
       // Update Tab Styles
       ['shalat', 'pagi', 'petang'].forEach(t => {
@@ -521,20 +606,44 @@
           isDone ? 'border-emerald-500 bg-emerald-50/30' : 'border-slate-200 hover:border-slate-300'
         }`;
 
+        // Component templates
+        const plusButtonHTML = `
+          <button onclick="increment('${item.id}', ${target})" ${isDone ? 'disabled' : ''} class="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-2xl shrink-0 transition-all shadow-sm ${
+            isDone 
+              ? 'bg-emerald-100 text-emerald-400 cursor-not-allowed' 
+              : 'bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white'
+          }">
+            +
+          </button>
+        `;
+
+        const editResetHTML = `
+          <div class="flex items-center gap-1 shrink-0">
+            ${isEditing ? `
+              <div class="flex items-center gap-1 ${isControlOnLeft ? 'mr-1' : 'ml-1'}">
+                <input id="input-${item.id}" type="number" min="1" value="${target}" class="w-12 bg-white border border-emerald-500 rounded px-1 py-0.5 text-center font-bold text-xs text-slate-700 focus:outline-none">
+                <button onclick="saveTargetInput('${item.id}', document.getElementById('input-${item.id}').value)" class="bg-emerald-600 text-white text-[10px] px-2 py-1 rounded">Simpan</button>
+              </div>
+            ` : ''}
+            <button onclick="toggleEditTarget('${item.id}')" title="Ubah Target" class="p-1.5 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-100 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+            </button>
+            <button onclick="resetSingle('${item.id}')" title="Reset Hitungan Ini" class="p-1.5 text-slate-400 hover:text-red-500 rounded-lg hover:bg-slate-100 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            </button>
+          </div>
+        `;
+
         if (isCompactView) {
           // COMPACT VIEW LAYOUT
+          const leftElement = isControlOnLeft ? plusButtonHTML : editResetHTML;
+          const rightElement = isControlOnLeft ? editResetHTML : plusButtonHTML;
+
           card.innerHTML = `
             <div class="flex items-center justify-between gap-3">
-              <!-- Left: Big Plus Button -->
-              <button onclick="increment('${item.id}', ${target})" ${isDone ? 'disabled' : ''} class="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-2xl shrink-0 transition-all shadow-sm ${
-                isDone 
-                  ? 'bg-emerald-100 text-emerald-400 cursor-not-allowed' 
-                  : 'bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white'
-              }">
-                +
-              </button>
+              ${leftElement}
 
-              <!-- Middle: Title, Count Badge, Inline Edit -->
+              <!-- Middle: Title & Count -->
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2">
                   <h3 class="font-semibold text-slate-800 text-sm truncate">${item.title}</h3>
@@ -544,29 +653,34 @@
                 <div class="flex items-center gap-2 mt-1">
                   <span class="text-lg font-bold ${isDone ? 'text-emerald-600' : 'text-slate-800'}">${count}</span>
                   <span class="text-xs text-slate-400">/ ${target}</span>
-
-                  ${isEditing ? `
-                    <div class="flex items-center gap-1 ml-2">
-                      <input id="input-${item.id}" type="number" min="1" value="${target}" class="w-12 bg-white border border-emerald-500 rounded px-1 text-center font-bold text-xs text-slate-700 focus:outline-none">
-                      <button onclick="saveTargetInput('${item.id}', document.getElementById('input-${item.id}').value)" class="bg-emerald-600 text-white text-[10px] px-2 py-1 rounded">Simpan</button>
-                    </div>
-                  ` : ''}
                 </div>
               </div>
 
-              <!-- Right: Edit & Reset Buttons -->
-              <div class="flex items-center gap-1 shrink-0">
-                <button onclick="toggleEditTarget('${item.id}')" title="Ubah Target" class="p-1.5 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-100 transition">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
-                </button>
-                <button onclick="resetSingle('${item.id}')" title="Reset" class="p-1.5 text-slate-400 hover:text-red-500 rounded-lg hover:bg-slate-100 transition">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                </button>
-              </div>
+              ${rightElement}
             </div>
           `;
         } else {
           // COMPLETE VIEW LAYOUT
+          const actionGroup1 = isControlOnLeft ? `
+            <div class="flex items-center gap-3">
+              ${plusButtonHTML}
+              <div class="flex items-baseline gap-1">
+                <span class="text-2xl font-bold ${isDone ? 'text-emerald-600' : 'text-slate-800'}">${count}</span>
+                <span class="text-xs text-slate-400 font-medium">/ ${target}</span>
+              </div>
+            </div>
+          ` : editResetHTML;
+
+          const actionGroup2 = isControlOnLeft ? editResetHTML : `
+            <div class="flex items-center gap-3">
+              <div class="flex items-baseline gap-1">
+                <span class="text-2xl font-bold ${isDone ? 'text-emerald-600' : 'text-slate-800'}">${count}</span>
+                <span class="text-xs text-slate-400 font-medium">/ ${target}</span>
+              </div>
+              ${plusButtonHTML}
+            </div>
+          `;
+
           card.innerHTML = `
             <!-- Header -->
             <div class="flex items-start justify-between gap-2 mb-3">
@@ -599,39 +713,8 @@
 
             <!-- Counter Actions Bar -->
             <div class="flex items-center justify-between pt-3 border-t border-slate-100">
-              <!-- LEFT: Big Plus Button & Count Display -->
-              <div class="flex items-center gap-3">
-                <button onclick="increment('${item.id}', ${target})" ${isDone ? 'disabled' : ''} class="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-2xl transition-all shadow-sm ${
-                  isDone 
-                    ? 'bg-emerald-100 text-emerald-400 cursor-not-allowed' 
-                    : 'bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white'
-                }">
-                  +
-                </button>
-
-                <div class="flex items-baseline gap-1">
-                  <span class="text-2xl font-bold ${isDone ? 'text-emerald-600' : 'text-slate-800'}">${count}</span>
-                  <span class="text-xs text-slate-400 font-medium">/ ${target}</span>
-                </div>
-              </div>
-
-              <!-- RIGHT: Edit Target & Reset Buttons -->
-              <div class="flex items-center gap-1">
-                ${isEditing ? `
-                  <div class="flex items-center gap-1 mr-2">
-                    <input id="input-${item.id}" type="number" min="1" value="${target}" class="w-14 bg-white border border-emerald-500 rounded px-1.5 py-1 text-center font-bold text-xs text-slate-700 focus:outline-none">
-                    <button onclick="saveTargetInput('${item.id}', document.getElementById('input-${item.id}').value)" class="bg-emerald-600 text-white text-xs px-2 py-1 rounded">Simpan</button>
-                  </div>
-                ` : ''}
-
-                <button onclick="toggleEditTarget('${item.id}')" title="Ubah Target" class="p-2 text-slate-400 hover:text-emerald-600 rounded-full hover:bg-slate-100 transition">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
-                </button>
-
-                <button onclick="resetSingle('${item.id}')" title="Reset Hitungan Ini" class="p-2 text-slate-400 hover:text-red-500 rounded-full hover:bg-slate-100 transition">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                </button>
-              </div>
+              ${actionGroup1}
+              ${actionGroup2}
             </div>
           `;
         }
