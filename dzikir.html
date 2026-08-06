@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dzikir Harian - According to Al-Qur'an & As-Sunnah</title>
+  <title>Dzikir Harian - Menurut Al-Qur'an & As-Sunnah</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,7 +80,12 @@
   </footer>
 
   <script>
-    // Shared Surah Definitions
+    // Shared Full Qur'an Passages
+    const ayatKursiText = {
+      arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَّهُ مَا فِي السَّمَوَاتِ وَمَا فِي الْأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ",
+      translation: "Allah, tidak ada Ilah (yang berhak diibadahi dengan benar) melainkan Dia Yang Mahahidup, Yang terus-menerus mengurus (makhluk-Nya); tidak mengantuk dan tidak tidur. Milik-Nya apa yang di langit dan apa yang di bumi. Tidak ada yang dapat memberi syafa'at di sisi-Nya tanpa izin-Nya. Dia mengetahui apa yang di hadapan mereka dan di belakang mereka, dan mereka tidak mengetahui sesuatu pun tentang ilmu-Nya melainkan apa yang dikehendaki-Nya. Kursi-Nya meliputi langit dan bumi. Dan Dia tidak merasa berat memelihara keduanya, dan Dia Mahatinggi, Mahabesar. (QS. Al-Baqarah: 255)"
+    };
+
     const surahAlIkhlash = {
       arabic: "بِسْمِ اللهِ الرَّحْمنِ الرَّحِيمِ\nقُلْ هُوَ اللَّهُ أَحَدٌ (١) اللَّهُ الصَّمَدُ (٢) لَمْ يَلِدْ وَلَمْ يُولَدْ (٣) وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ (٤)",
       translation: "Katakanlah (Muhammad): 'Dia-lah Allah, Yang Maha Esa. Allah Rabb yang bergantung kepada-Nya segala urusan. (Allah) tidak beranak dan tidak pula diperanakkan. Dan tidak ada sesuatu pun yang setara dengan Dia.' (QS. Al-Ikhlash: 1-4)"
@@ -121,7 +126,7 @@
           id: "sh_3",
           title: "Tahlil Isnaan (Lanjutan)",
           arabic: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ لَهُ الْمُلكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلُّ شَيْءٌ قَدِيرٌ. لَا حَوْلَ وَلَا قَوْمَةَ إِلَّا بِاللَّهِ، لَا إِلَّا اللَّهُ، وَلَا نَعْبُدُ إِلَّا إِيَّاهُ، لَهُ النُّعْمَةُ وَلَهُ الْفَضْلُ وَلَهُ الْثَنَّاءُ الْحَسَنُ، لَا إِلَّا اللَّهُ خُلِصِينَ لَهُ الدُّنْيَ وَ لَوْ كَرِهَ الْكَافِرُونَ.",
-          translation: "Tidak ada Ilah yang berhak diibadahi dengan benar selain Allah semata, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan pujian. Dia Mahakuasa atas segala sesuatu. Tidak ada daya dan kekuatan kecuali (dengan pertolongan) Allah. Tidak ada Ilah yang berhak diibadahi dengan benar selain Allah. Kami tidak menyembah kecuali kepada-Nya...",
+          translation: "Tidak ada Ilah yang berhak diibadahi dengan benar selain Allah semata, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan pujian. Dia Mahakuasa atas segala sesuatu. Tidak ada daya dan kekuatan kecuali (dengan pertolongan) Allah. Tidak ada Ilah yang berhak diibadahi dengan benar selain Allah. Kami tidak menyembah kecuali kepada-Nya. Bagi-Nya nikmat, anugerah, dan pujian yang baik. Tidak ada Ilah yang berhak diibadahi dengan benar selain Allah, dengan memurnikan ibadah kepada-Nya, sekalipun orang-orang kafir tidak menyukainya.",
           citation: "HR. Muslim (I/415)",
           defaultTarget: 1,
           note: "Dibaca 1x"
@@ -192,8 +197,8 @@
         {
           id: "sh_6",
           title: "Ayat Kursi",
-          arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَّهُ مَا فِي السَّمَواتِ وَمَا فِي الْأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَواتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ",
-          translation: "Allah, tidak ada Ilah (yang berhak diibadahi dengan benar) melainkan Dia Yang Mahahidup, Yang terus-menerus mengurus (makhluk-Nya)... (QS. Al-Baqarah: 255)",
+          arabic: ayatKursiText.arabic,
+          translation: ayatKursiText.translation,
           citation: "HR. An-Nasa-i dalam 'Amalul Yaum wa Lailah (no. 100) & Ibnu Sunni (no. 121)",
           defaultTarget: 1,
           note: "Dibaca 1x setelah shalat wajib"
@@ -221,8 +226,8 @@
         {
           id: "pg_1",
           title: "Ayat Kursi",
-          arabic: "أَعُوْذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ.\nاللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...",
-          translation: "Aku berlindung kepada Allah dari godaan syaitan yang terkutuk. Allah, tidak ada Ilah (yang berhak diibadahi dengan benar) melainkan Dia Yang Mahahidup...",
+          arabic: "أَعُوْذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ.\n" + ayatKursiText.arabic,
+          translation: "Aku berlindung kepada Allah dari godaan syaitan yang terkutuk.\n" + ayatKursiText.translation,
           citation: "HR. Al-Hakim (I/562)",
           defaultTarget: 1,
           note: "Dibaca 1x"
@@ -258,7 +263,7 @@
           id: "pg_3",
           title: "Asbahna wa Asbahal Mulku Lillah",
           arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ. رَبَّ أَسْأَلُكَ خَيْرَ مَا فِي هَٰذَا الْيَوْمَ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بَلْكَ مِنْ شَرِّ مَا فِي هَٰذَا الْيَوْمَ وَشَرِّ مَا بَعْدَهُ، رَبَّ أَعُوذُ بَلْكَ مِنَ الْكَسَلِ وَسُوءُ الْكَبَرِ، رَبَّ أَعُوذُ بِكَ مِنْ عَذَابَ فِي الْقَبْرِ.",
-          translation: "Kami telah memasuki waktu pagi dan kerajaan hanya milik Allah, segala puji bagi Allah...",
+          translation: "Kami telah memasuki waktu pagi dan kerajaan hanya milik Allah, segala puji bagi Allah. Tidak ada Ilah yang berhak diibadahi dengan benar selain Allah semata, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya pujian. Dia-lah Yang Mahakuasa atas segala sesuatu. Ya Rabb-ku, aku mohon kepada-Mu kebaikan di hari ini dan kebaikan sesudahnya. Aku berlindung kepada-Mu dari kejahatan hari ini dan kejahatan sesudahnya. Ya Rabb-ku, aku berlindung kepada-Mu dari kemalasan dan kejelekan di hari tua. Ya Rabb-ku, aku berlindung kepada-Mu dari siksaan di Neraka dan siksaan di kubur.",
           citation: "HR. Muslim (IV/2088)",
           defaultTarget: 1,
           note: "Dibaca 1x"
@@ -276,7 +281,7 @@
           id: "pg_5",
           title: "Sayyidul Istighfar",
           arabic: "اَللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوْءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ.",
-          translation: "Ya Allah, Engkau adalah Rabb-ku, tidak ada Ilah yang berhak diibadahi dengan benar selain Engkau...",
+          translation: "Ya Allah, Engkau adalah Rabb-ku, tidak ada Ilah yang berhak diibadahi dengan benar selain Engkau, Engkau-lah yang menciptakan aku. Aku adalah hamba-Mu. Aku akan setia pada perjanjianku dengan-Mu semampuku. Aku berlindung kepada-Mu dari kejelekan yang kuperbuat. Aku mengakui nikmat-Mu kepadaku dan aku mengakui dosaku, oleh karena itu, ampunilah aku. Sesungguhnya tidak ada yang dapat mengampuni dosa kecuali Engkau.",
           citation: "HR. Al-Bukhari (VII/150)",
           defaultTarget: 1,
           note: "Dibaca 1x"
@@ -285,7 +290,7 @@
           id: "pg_6",
           title: "Doa Persaksian Di Waktu Pagi",
           arabic: "اَللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلَائِكَتَكَ وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللهُ لَا إِلَهَ إِلَّا أَنْتَ وَحْدَكَ لا شَرِيكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُوْلُكَ.",
-          translation: "Ya Allah, sesungguhnya aku di waktu pagi ini mempersaksikan Engkau, Malaikat yang memikul 'Arsy-Mu...",
+          translation: "Ya Allah, sesungguhnya aku di waktu pagi ini mempersaksikan Engkau, Malaikat yang memikul 'Arsy-Mu, Malaikat-Malaikat dan seluruh makhluk-Mu, bahwa sesungguhnya Engkau adalah Allah, Tidak ada Ilah yang berhak diibadahi dengan benar selain Engkau semata, tidak ada sekutu bagi-Mu dan sesungguhnya Muhammad adalah hamba dan utusan-Mu.",
           citation: "HR. Abu Dawud (IV/317) dan An-Nasa'i",
           defaultTarget: 4,
           note: "Dibaca 4x"
@@ -294,7 +299,7 @@
           id: "pg_7",
           title: "Doa Keselamatan Tubuh & Perlindungan",
           arabic: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ. اللَّهُمَّ إِلَى أَعُوْذُ بِكَ مِنَ الْكَفْرِ وَالْفَقْرِ، وَأَعُوْذُ بِكَ مِنَ عَذَابِ الْقَرْيِ، لَا إِلَهَ إِلَّا أَنْتَ.",
-          translation: "Ya Allah, selamatkan tubuhku. Ya Allah, selamatkan pendengaranku. Ya Allah, selamatkan penglihatanku...",
+          translation: "Ya Allah, selamatkan tubuhku (dari penyakit dan yang tidak aku inginkan). Ya Allah, selamatkan pendengaranku (dari penyakit dan maksiat atau sesuatu yang tidak aku inginkan). Ya Allah, selamatkan penglihatanku. Tidak ada Ilah yang berhak diibadahi dengan benar selain Engkau. Ya Allah, sesungguhnya aku berlindung kepada-Mu dari kekufuran dan kefakiran. Aku berlindung kepada-Mu dari siksa kubur. Tidak ada Ilah yang berhak diibadahi dengan benar selain Engkau.",
           citation: "HR. Abu Dawud (IV/324) dan Ahmad (V/42)",
           defaultTarget: 3,
           note: "Dibaca 3x"
@@ -303,7 +308,7 @@
           id: "pg_8",
           title: "Hasbiyallahu Laa Ilaha Illa Huwa",
           arabic: "حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَزْشِ الْعَظِيمُ",
-          translation: "Allah-lah yang mencukupi (segala kebutuhan), Tidak ada Ilah yang berhak diibadahi dengan benar selain Dia...",
+          translation: "Allah-lah yang mencukupi (segala kebutuhan), Tidak ada Ilah yang berhak diibadahi dengan benar selain Dia, kepada-Nya aku bertawakal. Dia-lah Rabb (yang menguasai) 'Arsy yang agung.",
           citation: "HR. Ibnus Sunni (no. 71) dan Abu Dawud (IV/321)",
           defaultTarget: 7,
           note: "Dibaca 7x"
@@ -312,7 +317,7 @@
           id: "pg_9",
           title: "Bismillahilladhi Laa Yadhurru",
           arabic: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمُهُ شَيْءٌ فِٱلۡأَرۡضِ وََلَ فِٱلسَّ مِعُ ٱلۡعَلِيمُ.",
-          translation: "Dengan nama Allah yang bila disebut, segala sesuatu di bumi dan langit tidak akan berbahaya...",
+          translation: "Dengan nama Allah yang bila disebut, segala sesuatu di bumi dan langit tidak akan berbahaya, Dia-lah Yang Maha Mendengar, Maha Mengetahui.",
           citation: "HR. Abu Dawud dan At-Tirmidzi",
           defaultTarget: 3,
           note: "Dibaca 3x"
@@ -321,7 +326,7 @@
           id: "pg_10",
           title: "Radhiitu Billahi Rabba",
           arabic: "رَضِيتُ بِاللَّهِ رَبَّا، وَبِالْسَّ لَامِ دِينًا. وَبِمَحْمَدَ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا.",
-          translation: "Aku rela Allah sebagai Rabb, Islam sebagai agama, dan Muhammad SAW sebagai Nabi.",
+          translation: "Aku rela Allah sebagai Rabb, Islam sebagai agama, dan Muhammad SAW sebagai Nabi (yang diutus oleh Allah).",
           citation: "HR. Ahmad (IV/337) dan An-Nasa'i",
           defaultTarget: 3,
           note: "Dibaca 3x"
@@ -339,7 +344,7 @@
           id: "pg_12",
           title: "Subhanallah 'Adada Khalqih",
           arabic: "سُبْحَانَ اللهِ وَبِحَمْدِهِ: عَدَدَ خَلْقِهِ وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ وَمِدَادَ كَلِمَاتِهِ.",
-          translation: "Mahasuci Allah, aku memuji-Nya sebanyak makhluk-Nya, sejauh kerelaan-Nya, seberat timbangan 'Arsy-Nya...",
+          translation: "Mahasuci Allah, aku memuji-Nya sebanyak makhluk-Nya, sejauh kerelaan-Nya, seberat timbangan 'Arsy-Nya, dan sebanyak tinta tulisan kalimat-Nya.",
           citation: "HR. Muslim (IV/2090)",
           defaultTarget: 3,
           note: "Dibaca 3x"
@@ -367,8 +372,8 @@
         {
           id: "pt_1",
           title: "Ayat Kursi",
-          arabic: "أَعُوْذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ.\nاللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...",
-          translation: "Aku berlindung kepada Allah dari godaan syaitan yang terkutuk. Allah, tidak ada Ilah (yang berhak diibadahi dengan benar) melainkan Dia Yang Mahahidup...",
+          arabic: "أَعُوْذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ.\n" + ayatKursiText.arabic,
+          translation: "Aku berlindung kepada Allah dari godaan syaitan yang terkutuk.\n" + ayatKursiText.translation,
           citation: "HR. Al-Hakim (I/562)",
           defaultTarget: 1,
           note: "Dibaca 1x"
@@ -403,8 +408,8 @@
         {
           id: "pt_3",
           title: "Amsayna wa Amsal Mulku Lillah",
-          arabic: "أَمْسَيْنَا وَأَمْسَى الْـمُلكُ لِلَّهِ، وَالْـحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْـحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ الْـبِلَـةِ، وَخَيْرَ مَا بَعْدَهَا...",
-          translation: "Kami telah memasuki waktu sore dan kerajaan hanya milik Allah, segala puji bagi Allah...",
+          arabic: "أَمْسَيْنَا وَأَمْسَى الْـمُلكُ لِلَّهِ، وَالْـحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْـحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ الْـبِلَـةِ، وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ الْـبِلَـةِ وَشَرِّ مَا بَعْدَهَا، رَبِّ أَعُوذُ بِكَ مِنْ الْكَسَلِ وَسُوءِ الْكَبَرِ، رَبِّ أَعُوذُ بِكِ مِ نْ عَذَابِ فِي الْتَارِ وَعَذَابِ فِي الْقَٰبِرِ.",
+          translation: "Kami telah memasuki waktu sore dan kerajaan hanya milik Allah, segala puji bagi Allah. Tidak ada Ilah yang berhak diibadahi dengan benar selain Allah semata, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya pujian. Dia-lah Yang Mahakuasa atas segala sesuatu. Ya Rabb-ku, aku mohon kepada-Mu kebaikan di malam ini dan kebaikan sesudahnya. Dan Aku berlindung kepada-Mu dari kejahatan malam ini dan kejahatan sesudahnya. Ya Rabb-ku, aku berlindung kepada-Mu dari kemalasan dan kejelekan di hari tua. Rabb-ku, aku berlindung kepada-Mu dari siksaan di Neraka dan siksaan di kubur.",
           citation: "HR. Muslim (IV/2088)",
           defaultTarget: 1,
           note: "Dibaca 1x"
@@ -413,7 +418,7 @@
           id: "pt_4",
           title: "Allahumma Bika Amsayna",
           arabic: "أَللَّهُمَّ بِكَ أُمَّسَتَا، وَبِكَ أَصْبَحْنا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَالْبِكَ الْمَصِيرُ.",
-          translation: "Ya Allah, dengan pertolongan dan rahmat-Mu kami masuk waktu sore, dan dengan pertolongan dan rahmat-Mu kami masuk waktu pagi. Dengan rahmat dan pertolongan-Mu kami hidup dan dengan kehendak-Mu kami mati. Dan kepada-Mu tempat kembali.",
+          translation: "Ya Allah, dengan pertolongan dan rahmat-Mu kami masuk waktu sore, dan dengan pertolongan dan rahmat-Mu kami masuk waktu pagi. Dengan rahmat dan pertolongan-Mu kami hidup dan dengan kehendak-Mu kami mati. Dan kepada-Mu tempat kembali (bagi semua makhluk).",
           citation: "HR. At-Tirmidzi (V/466)",
           defaultTarget: 1,
           note: "Dibaca 1x"
@@ -422,7 +427,7 @@
           id: "pt_5",
           title: "Sayyidul Istighfar",
           arabic: "اللَّهُمَّ أَنْتَ رَبِّيْ لَا إِلَهَ إِلَّا أَنْتَ خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَى، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَعْفِرُ الدُّنْوُبَ إِلَّا أَنْتَ.",
-          translation: "Ya Allah, Engkau adalah Rabb-ku, tidak ada Ilah yang berhak diibadahi dengan benar selain Engkau...",
+          translation: "Ya Allah, Engkau adalah Rabb-ku, tidak ada Ilah yang berhak diibadahi dengan benar selain Engkau, Engkau-lah yang menciptakan aku. Aku adalah hamba-Mu. Aku akan setia pada perjanjianku dengan-Mu semampuku. Aku berlindung kepada-Mu dari kejelekan yang kuperbuat. Aku mengakui nikmat-Mu kepadaku dan aku mengakui dosaku, oleh karena itu, ampunilah aku. Sesungguhnya tidak ada yang dapat mengampuni dosa kecuali Engkau.",
           citation: "HR. Al-Bukhari (VII/150)",
           defaultTarget: 1,
           note: "Dibaca 1x"
@@ -440,7 +445,7 @@
           id: "pt_7",
           title: "Bismillahilladhi Laa Yadhurru",
           arabic: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمُهُ شِيَ فِي الْأَرْضِ وَلَا فِي السَّيَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
-          translation: "Dengan nama Allah yang bila disebut, segala sesuatu di bumi dan langit tidak akan berbahaya...",
+          translation: "Dengan nama Allah yang bila disebut, segala sesuatu di bumi dan langit tidak akan berbahaya, Dia-lah Yang Maha Mendengar, Maha Mengetahui.",
           citation: "HR. Abu Dawud dan At-Tirmidzi",
           defaultTarget: 3,
           note: "Dibaca 3x"
@@ -449,7 +454,7 @@
           id: "pt_8",
           title: "Radhiitu Billahi Rabba",
           arabic: "رَضِيتُ بِاللَّهِ رَبَّا، وَبِالْسَّلَامِ دِينًا. وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيَّا.",
-          translation: "Aku rela Allah sebagai Rabb, Islam sebagai agama, dan Muhammad SAW sebagai Nabi.",
+          translation: "Aku rela Allah sebagai Rabb, Islam sebagai agama, dan Muhammad SAW sebagai Nabi (yang diutus oleh Allah).",
           citation: "HR. Ahmad (IV/337) dan An-Nasa'i",
           defaultTarget: 3,
           note: "Dibaca 3x"
@@ -478,7 +483,7 @@
     // State Management
     let currentTab = localStorage.getItem('dzikir_active_tab') || 'shalat';
     let isCompactView = localStorage.getItem('dzikir_view_mode') === 'compact';
-    let isControlOnLeft = localStorage.getItem('dzikir_control_side') !== 'right'; // default is left
+    let isControlOnLeft = localStorage.getItem('dzikir_control_side') !== 'right';
     let userCounts = JSON.parse(localStorage.getItem('dzikir_counts') || '{}');
     let userTargets = JSON.parse(localStorage.getItem('dzikir_targets') || '{}');
     let editingTargetId = null;
@@ -576,11 +581,9 @@
     }
 
     function render() {
-      // Toggle button labels
       document.getElementById('viewModeLabel').textContent = isCompactView ? 'Renggang' : 'Ringkas';
       document.getElementById('sideModeLabel').textContent = isControlOnLeft ? 'Kiri' : 'Kanan';
 
-      // Update Tab Styles
       ['shalat', 'pagi', 'petang'].forEach(t => {
         const btn = document.getElementById(`tab-${t}`);
         if (t === currentTab) {
@@ -606,7 +609,6 @@
           isDone ? 'border-emerald-500 bg-emerald-50/30' : 'border-slate-200 hover:border-slate-300'
         }`;
 
-        // Component templates
         const plusButtonHTML = `
           <button onclick="increment('${item.id}', ${target})" ${isDone ? 'disabled' : ''} class="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-2xl shrink-0 transition-all shadow-sm ${
             isDone 
@@ -635,7 +637,6 @@
         `;
 
         if (isCompactView) {
-          // COMPACT VIEW LAYOUT
           const leftElement = isControlOnLeft ? plusButtonHTML : editResetHTML;
           const rightElement = isControlOnLeft ? editResetHTML : plusButtonHTML;
 
@@ -643,7 +644,6 @@
             <div class="flex items-center justify-between gap-3">
               ${leftElement}
 
-              <!-- Middle: Title & Count -->
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2">
                   <h3 class="font-semibold text-slate-800 text-sm truncate">${item.title}</h3>
@@ -660,7 +660,6 @@
             </div>
           `;
         } else {
-          // COMPLETE VIEW LAYOUT
           const actionGroup1 = isControlOnLeft ? `
             <div class="flex items-center gap-3">
               ${plusButtonHTML}
@@ -682,7 +681,6 @@
           `;
 
           card.innerHTML = `
-            <!-- Header -->
             <div class="flex items-start justify-between gap-2 mb-3">
               <div>
                 <h3 class="font-semibold text-slate-800 text-base flex items-center gap-2">
@@ -692,26 +690,22 @@
                 <p class="text-xs text-slate-500 mt-0.5">${item.note}</p>
               </div>
               
-              <!-- Audio Pronunciation Button -->
               <button onclick="speakArabic(\`${item.arabic}\`)" title="Dengarkan Pelafalan" class="p-1.5 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-100 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
               </button>
             </div>
 
-            <!-- Arabic Text -->
-            <div class="font-arabic text-right text-2xl md:text-3xl text-slate-800 mb-3 leading-loose" dir="rtl">
+            <div class="font-arabic text-right text-2xl md:text-3xl text-slate-800 mb-3 leading-loose whitespace-pre-line" dir="rtl">
               ${item.arabic}
             </div>
 
-            <!-- Translation & Footnote Citation -->
-            <p class="text-xs md:text-sm text-slate-600 mb-2 leading-relaxed italic">
+            <p class="text-xs md:text-sm text-slate-600 mb-2 leading-relaxed italic whitespace-pre-line">
               "${item.translation}"
             </p>
             <p class="text-[11px] text-emerald-700 font-medium mb-4">
               📌 Takhrij / Perawi: ${item.citation}
             </p>
 
-            <!-- Counter Actions Bar -->
             <div class="flex items-center justify-between pt-3 border-t border-slate-100">
               ${actionGroup1}
               ${actionGroup2}
@@ -733,7 +727,6 @@
       }
     });
 
-    // Initial load
     render();
   </script>
 </body>
