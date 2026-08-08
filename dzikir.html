@@ -146,7 +146,16 @@
 
       </div>
 
-      <div class="pt-2">
+      <div class="pt-2 space-y-2">
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="testVibration()" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold transition text-xs">
+            Tes Getar
+          </button>
+          <button onclick="testSound()" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold transition text-xs">
+            Tes Suara
+          </button>
+        </div>
+
         <button onclick="toggleSettingsModal(false)" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition text-xs">
           Simpan dan Tutup
         </button>
@@ -356,6 +365,55 @@
       // Audio Chime Feedback
       if (settings.enableSound) {
         playBeepSound();
+      }
+    }
+
+    // Test both vibration and sound (invoked from Settings - must be user gesture)
+    function testFeedback() {
+      let supported = false;
+
+      // Vibration test
+      if (navigator.vibrate) {
+        // use a perceptible pattern
+        navigator.vibrate([200, 60, 200]);
+        supported = true;
+      }
+
+      // Sound test (feature detect AudioContext)
+      if (window.AudioContext || window.webkitAudioContext) {
+        try {
+          playBeepSound();
+          supported = true;
+        } catch (e) {
+          console.warn('Audio test failed', e);
+        }
+      }
+
+      if (!supported) {
+        alert('Perangkat/penjelajah tidak mendukung getar atau audio chime.');
+      }
+    }
+
+    // Separate vibration test (user gesture required)
+    function testVibration() {
+      if (navigator.vibrate) {
+        navigator.vibrate([200, 60, 200]);
+      } else {
+        alert('Getar tidak didukung pada perangkat ini.');
+      }
+    }
+
+    // Separate sound test (user gesture required)
+    function testSound() {
+      if (window.AudioContext || window.webkitAudioContext) {
+        try {
+          playBeepSound();
+        } catch (e) {
+          console.warn('Audio test failed', e);
+          alert('Pemutaran audio gagal.');
+        }
+      } else {
+        alert('Audio tidak didukung pada perangkat ini.');
       }
     }
 
