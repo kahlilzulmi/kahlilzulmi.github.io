@@ -9,9 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    .font-arabic {
+    div.font-arabic {
       font-family: 'Amiri', serif;
-      line-height: 2.2;
+      line-height: 2.6;
+      white-space: pre-line;
     }
   </style>
 </head>
@@ -611,9 +612,7 @@
               </button>
             </div>
 
-            <div class="font-arabic text-right ${arClass} text-slate-800 mb-3 leading-loose" dir="rtl">
-              ${item.arabic}
-            </div>
+            <div class="font-arabic text-right ${arClass} text-slate-800 mb-3" dir="rtl">${item.arabic}</div>
 
             <p class="${trClass} text-slate-600 mb-2 leading-relaxed italic">
               "${item.translation}"
