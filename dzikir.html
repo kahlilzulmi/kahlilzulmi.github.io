@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dzikir Harian - Menurut Al-Qur'an & As-Sunnah</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+    try {
+      const s = JSON.parse(localStorage.getItem('dzikir_settings') || '{}');
+      if (s.isDarkMode) document.documentElement.classList.add('dark');
+    } catch (e) {}
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,26 +23,28 @@
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col font-sans">
 
   <!-- Header -->
   <header class="bg-emerald-700 text-white shadow-md sticky top-0 z-50">
     <div class="max-w-3xl mx-auto px-4 py-3.5 flex items-center justify-between gap-2">
-      <div class="flex items-center gap-3">
-        <!-- Back Link -->
-        <a href="https://kahlilzulmi.github.io" class="inline-flex items-center gap-1.5 text-xs text-emerald-100 hover:text-white bg-emerald-800/60 hover:bg-emerald-800 px-2.5 py-1.5 rounded-md border border-emerald-600/40 transition">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-          </svg>
-        </a>
-
-        <div>
-          <h1 class="text-base sm:text-lg font-bold tracking-tight leading-tight">Dzikir Harian</h1>
-          <p class="text-[10px] text-emerald-100">Hisnul Muslim</p>
-        </div>
+      <div>
+        <h1 class="text-base sm:text-lg font-bold tracking-tight leading-tight">Dzikir Harian</h1>
+        <p class="text-[10px] text-emerald-100">Hisnul Muslim</p>
       </div>
 
       <div class="flex items-center gap-2">
+        <!-- GitHub Repo -->
+        <a href="https://github.com/kahlilzulmi/kahlilzulmi.github.io" target="_blank" rel="noopener noreferrer" class="bg-emerald-800/80 hover:bg-emerald-900 text-emerald-100 text-xs px-2.5 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 border border-emerald-600/40 shadow-sm" title="Lihat di GitHub">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/></svg>
+        </a>
+
+        <!-- Dark Mode Toggle -->
+        <button id="darkModeToggleBtn" onclick="setSetting('isDarkMode', !settings.isDarkMode)" class="bg-emerald-800/80 hover:bg-emerald-900 text-emerald-100 text-xs px-2.5 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 border border-emerald-600/40 shadow-sm" title="Mode gelap">
+          <svg id="iconMoon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          <svg id="iconSun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </button>
+
         <!-- Settings Trigger Button -->
         <button onclick="toggleSettingsModal(true)" class="bg-emerald-800/80 hover:bg-emerald-900 text-emerald-100 text-xs px-2.5 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 border border-emerald-600/40 shadow-sm" title="Pengaturan">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,13 +79,13 @@
   </main>
 
   <!-- Settings Modal Overlay -->
-  <div id="settingsModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 space-y-5 border border-slate-100 max-h-[90vh] overflow-y-auto">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-        <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+  <div id="settingsModal" class="fixed inset-0 bg-slate-900/50 dark:bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl max-w-md w-full p-6 space-y-5 border border-slate-100 dark:border-slate-700 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
+        <h2 class="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
           Pengaturan Aplikasi
         </h2>
-        <button onclick="toggleSettingsModal(false)" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+        <button onclick="toggleSettingsModal(false)" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
@@ -84,13 +93,24 @@
       <!-- Settings Controls Group -->
       <div class="space-y-4 text-xs">
 
+        <!-- Dark Mode -->
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="font-semibold text-slate-700 dark:text-slate-200">Mode Gelap</div>
+            <div class="text-slate-400 dark:text-slate-500 text-[11px]">Tampilan gelap untuk membaca di malam hari</div>
+          </div>
+          <button onclick="setSetting('isDarkMode', !settings.isDarkMode)" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 font-semibold rounded-lg text-emerald-700 dark:text-emerald-400 border border-slate-200 dark:border-slate-600">
+            <span id="settingDarkText"></span>
+          </button>
+        </div>
+
         <!-- Tampilan Mode -->
         <div class="flex items-center justify-between">
           <div>
-            <div class="font-semibold text-slate-700">Mode Tampilan</div>
-            <div class="text-slate-400 text-[11px]">Ringkas (hanya judul) / Lengkap (dengan Arab & arti)</div>
+            <div class="font-semibold text-slate-700 dark:text-slate-200">Mode Tampilan</div>
+            <div class="text-slate-400 dark:text-slate-500 text-[11px]">Ringkas (hanya judul) / Lengkap (dengan Arab & arti)</div>
           </div>
-          <button onclick="setSetting('isCompactView', !settings.isCompactView)" class="px-3 py-1.5 bg-slate-100 font-semibold rounded-lg text-emerald-700 border border-slate-200">
+          <button onclick="setSetting('isCompactView', !settings.isCompactView)" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 font-semibold rounded-lg text-emerald-700 dark:text-emerald-400 border border-slate-200 dark:border-slate-600">
             <span id="settingViewText"></span>
           </button>
         </div>
@@ -98,49 +118,49 @@
         <!-- Posisi Tombol Hitung -->
         <div class="flex items-center justify-between">
           <div>
-            <div class="font-semibold text-slate-700">Posisi Tombol Hitung</div>
-            <div class="text-slate-400 text-[11px]">Tukar tombol (+) ke sisi Kiri atau Kanan</div>
+            <div class="font-semibold text-slate-700 dark:text-slate-200">Posisi Tombol Hitung</div>
+            <div class="text-slate-400 dark:text-slate-500 text-[11px]">Tukar tombol (+) ke sisi Kiri atau Kanan</div>
           </div>
-          <button onclick="setSetting('isControlOnLeft', !settings.isControlOnLeft)" class="px-3 py-1.5 bg-slate-100 font-semibold rounded-lg text-emerald-700 border border-slate-200">
+          <button onclick="setSetting('isControlOnLeft', !settings.isControlOnLeft)" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 font-semibold rounded-lg text-emerald-700 dark:text-emerald-400 border border-slate-200 dark:border-slate-600">
             <span id="settingSideText"></span>
           </button>
         </div>
 
-        <hr class="border-slate-100">
+        <hr class="border-slate-100 dark:border-slate-700">
 
         <!-- Ukuran Teks Arab -->
         <div>
-          <div class="font-semibold text-slate-700 mb-1">Ukuran Teks Arab</div>
+          <div class="font-semibold text-slate-700 dark:text-slate-200 mb-1">Ukuran Teks Arab</div>
           <div class="grid grid-cols-3 gap-2">
-            <button onclick="setSetting('arabicFontSize', 'small')" id="btn-ar-small" class="py-1.5 border rounded-lg font-medium text-center">Kecil</button>
-            <button onclick="setSetting('arabicFontSize', 'medium')" id="btn-ar-medium" class="py-1.5 border rounded-lg font-medium text-center">Sedang</button>
-            <button onclick="setSetting('arabicFontSize', 'large')" id="btn-ar-large" class="py-1.5 border rounded-lg font-medium text-center">Besar</button>
+            <button onclick="setSetting('arabicFontSize', 'small')" id="btn-ar-small" class="py-1.5 border dark:border-slate-600 rounded-lg font-medium text-center">Kecil</button>
+            <button onclick="setSetting('arabicFontSize', 'medium')" id="btn-ar-medium" class="py-1.5 border dark:border-slate-600 rounded-lg font-medium text-center">Sedang</button>
+            <button onclick="setSetting('arabicFontSize', 'large')" id="btn-ar-large" class="py-1.5 border dark:border-slate-600 rounded-lg font-medium text-center">Besar</button>
           </div>
         </div>
 
         <!-- Ukuran Teks Terjemahan -->
         <div>
-          <div class="font-semibold text-slate-700 mb-1">Ukuran Teks Terjemahan</div>
+          <div class="font-semibold text-slate-700 dark:text-slate-200 mb-1">Ukuran Teks Terjemahan</div>
           <div class="grid grid-cols-3 gap-2">
-            <button onclick="setSetting('translationFontSize', 'small')" id="btn-tr-small" class="py-1.5 border rounded-lg font-medium text-center">Kecil</button>
-            <button onclick="setSetting('translationFontSize', 'medium')" id="btn-tr-medium" class="py-1.5 border rounded-lg font-medium text-center">Sedang</button>
-            <button onclick="setSetting('translationFontSize', 'large')" id="btn-tr-large" class="py-1.5 border rounded-lg font-medium text-center">Besar</button>
+            <button onclick="setSetting('translationFontSize', 'small')" id="btn-tr-small" class="py-1.5 border dark:border-slate-600 rounded-lg font-medium text-center">Kecil</button>
+            <button onclick="setSetting('translationFontSize', 'medium')" id="btn-tr-medium" class="py-1.5 border dark:border-slate-600 rounded-lg font-medium text-center">Sedang</button>
+            <button onclick="setSetting('translationFontSize', 'large')" id="btn-tr-large" class="py-1.5 border dark:border-slate-600 rounded-lg font-medium text-center">Besar</button>
           </div>
         </div>
 
-        <hr class="border-slate-100">
+        <hr class="border-slate-100 dark:border-slate-700">
 
         <!-- Feedback Saat Selesai -->
         <div class="space-y-2">
-          <div class="font-semibold text-slate-700">Efek Ketika Target Dzikir Sudah Tercapai</div>
+          <div class="font-semibold text-slate-700 dark:text-slate-200">Efek Ketika Target Dzikir Sudah Tercapai</div>
           
-          <label class="flex items-center justify-between p-2 bg-slate-50 rounded-lg cursor-pointer">
-            <span class="text-slate-600">Getar</span>
+          <label class="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 rounded-lg cursor-pointer">
+            <span class="text-slate-600 dark:text-slate-300">Getar</span>
             <input type="checkbox" id="chk-vibrate" onchange="setSetting('enableVibration', this.checked)" class="w-4 h-4 accent-emerald-600">
           </label>
 
-          <label class="flex items-center justify-between p-2 bg-slate-50 rounded-lg cursor-pointer">
-            <span class="text-slate-600">Suara</span>
+          <label class="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800 rounded-lg cursor-pointer">
+            <span class="text-slate-600 dark:text-slate-300">Suara</span>
             <input type="checkbox" id="chk-sound" onchange="setSetting('enableSound', this.checked)" class="w-4 h-4 accent-emerald-600">
           </label>
         </div>
@@ -165,7 +185,7 @@
   </div>
 
   <!-- Footer -->
-  <footer class="bg-slate-100 border-t border-slate-200 text-center py-4 text-xs text-slate-500 mt-auto px-4">
+  <footer class="bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-center py-4 text-xs text-slate-500 dark:text-slate-400 mt-auto px-4">
     Berdasarkan Kitab <i>Hisnul Muslim</i> karya Syaikh Sa'id bin 'Ali bin Wahf al-Qahthani (Pustaka Ibnu 'Umar).
   </footer>
 
@@ -270,6 +290,7 @@
     let settings = Object.assign({
       isCompactView: false,
       isControlOnLeft: false,
+      isDarkMode: false,
       arabicFontSize: 'medium',      // small (20px), medium (28px), large (36px)
       translationFontSize: 'medium', // small (12px), medium (14px), large (18px)
       enableVibration: true,
@@ -277,6 +298,20 @@
     }, JSON.parse(localStorage.getItem('dzikir_settings') || '{}'));
 
     const synth = window.speechSynthesis;
+
+    function applyTheme() {
+      document.documentElement.classList.toggle('dark', !!settings.isDarkMode);
+      const moon = document.getElementById('iconMoon');
+      const sun = document.getElementById('iconSun');
+      const btn = document.getElementById('darkModeToggleBtn');
+      if (moon && sun) {
+        moon.classList.toggle('hidden', !!settings.isDarkMode);
+        sun.classList.toggle('hidden', !settings.isDarkMode);
+      }
+      if (btn) {
+        btn.title = settings.isDarkMode ? 'Mode terang' : 'Mode gelap';
+      }
+    }
 
     function saveState() {
       localStorage.setItem('dzikir_active_tab', currentTab);
@@ -288,6 +323,7 @@
 
     function setSetting(key, val) {
       settings[key] = val;
+      if (key === 'isDarkMode') applyTheme();
       saveState();
       render();
       updateSettingsModalUI();
@@ -306,6 +342,7 @@
     function updateSettingsModalUI() {
       document.getElementById('settingViewText').textContent = settings.isCompactView ? 'Ringkas' : 'Lengkap';
       document.getElementById('settingSideText').textContent = settings.isControlOnLeft ? 'Kiri' : 'Kanan';
+      document.getElementById('settingDarkText').textContent = settings.isDarkMode ? 'Aktif' : 'Nonaktif';
 
       // Font size active button styles
       ['small', 'medium', 'large'].forEach(size => {
@@ -315,13 +352,13 @@
         if (settings.arabicFontSize === size) {
           arBtn.className = "py-1.5 border rounded-lg font-bold text-center bg-emerald-600 text-white border-emerald-600";
         } else {
-          arBtn.className = "py-1.5 border rounded-lg font-medium text-center text-slate-600 hover:bg-slate-50";
+          arBtn.className = "py-1.5 border dark:border-slate-600 rounded-lg font-medium text-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800";
         }
 
         if (settings.translationFontSize === size) {
           trBtn.className = "py-1.5 border rounded-lg font-bold text-center bg-emerald-600 text-white border-emerald-600";
         } else {
-          trBtn.className = "py-1.5 border rounded-lg font-medium text-center text-slate-600 hover:bg-slate-50";
+          trBtn.className = "py-1.5 border dark:border-slate-600 rounded-lg font-medium text-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800";
         }
       });
 
@@ -524,14 +561,16 @@
         const isEditing = editingTargetId === item.id;
 
         const card = document.createElement('div');
-        card.className = `bg-white rounded-xl shadow-sm border transition-all duration-200 p-4 sm:p-5 ${
-          isDone ? 'border-emerald-500 bg-emerald-50/30' : 'border-slate-200 hover:border-slate-300'
+        card.className = `rounded-xl shadow-sm border transition-all duration-200 p-4 sm:p-5 ${
+          isDone
+            ? 'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/40 dark:border-emerald-600'
+            : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
         }`;
 
         const plusButtonHTML = `
           <button onclick="increment('${item.id}', ${target})" ${isDone ? 'disabled' : ''} class="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-2xl shrink-0 transition-all shadow-sm ${
             isDone 
-              ? 'bg-emerald-100 text-emerald-600 cursor-not-allowed' 
+              ? 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-400 cursor-not-allowed' 
               : 'bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white'
           }" ${isDone ? 'title="Selesai"' : 'title="Tambah hitungan"'}>
             ${isDone
@@ -544,14 +583,14 @@
           <div class="flex items-center gap-1 shrink-0">
             ${isEditing ? `
               <div class="flex items-center gap-1 ${settings.isControlOnLeft ? 'mr-1' : 'ml-1'}">
-                <input id="input-${item.id}" type="number" min="1" value="${target}" class="w-12 bg-white border border-emerald-500 rounded px-1 py-0.5 text-center font-bold text-xs text-slate-700 focus:outline-none">
+                <input id="input-${item.id}" type="number" min="1" value="${target}" class="w-12 bg-white dark:bg-slate-800 border border-emerald-500 rounded px-1 py-0.5 text-center font-bold text-xs text-slate-700 dark:text-slate-100 focus:outline-none">
                 <button onclick="saveTargetInput('${item.id}', document.getElementById('input-${item.id}').value)" class="bg-emerald-600 text-white text-[10px] px-2 py-1 rounded">Simpan</button>
               </div>
             ` : ''}
-            <button onclick="toggleEditTarget('${item.id}')" title="Ubah Target" class="p-1.5 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-100 transition">
+            <button onclick="toggleEditTarget('${item.id}')" title="Ubah Target" class="p-1.5 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
             </button>
-            <button onclick="resetSingle('${item.id}')" title="Reset Hitungan Ini" class="p-1.5 text-slate-400 hover:text-red-500 rounded-lg hover:bg-slate-100 transition">
+            <button onclick="resetSingle('${item.id}')" title="Reset Hitungan Ini" class="p-1.5 text-slate-400 hover:text-red-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             </button>
           </div>
@@ -570,12 +609,12 @@
 
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2">
-                  <h3 class="font-semibold text-slate-800 text-sm truncate">${item.title}</h3>
-                  ${isDone ? '<span class="bg-emerald-100 text-emerald-700 text-[10px] px-1.5 py-0.2 rounded-full font-medium shrink-0">Selesai</span>' : ''}
+                  <h3 class="font-semibold text-slate-800 dark:text-slate-100 text-sm truncate">${item.title}</h3>
+                  ${isDone ? '<span class="bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 text-[10px] px-1.5 py-0.2 rounded-full font-medium shrink-0">Selesai</span>' : ''}
                 </div>
                 
                 <div class="flex items-center gap-2 mt-1">
-                  <span class="text-lg font-bold ${isDone ? 'text-emerald-600' : 'text-slate-800'}">${count}</span>
+                  <span class="text-lg font-bold ${isDone ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-800 dark:text-slate-100'}">${count}</span>
                   <span class="text-xs text-slate-400">/ ${target}</span>
                 </div>
               </div>
@@ -588,7 +627,7 @@
             <div class="flex items-center gap-3">
               ${plusButtonHTML}
               <div class="flex items-baseline gap-1">
-                <span class="text-2xl font-bold ${isDone ? 'text-emerald-600' : 'text-slate-800'}">${count}</span>
+                <span class="text-2xl font-bold ${isDone ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-800 dark:text-slate-100'}">${count}</span>
                 <span class="text-xs text-slate-400 font-medium">/ ${target}</span>
               </div>
             </div>
@@ -597,7 +636,7 @@
           const actionGroup2 = settings.isControlOnLeft ? editResetHTML : `
             <div class="flex items-center gap-3">
               <div class="flex items-baseline gap-1">
-                <span class="text-2xl font-bold ${isDone ? 'text-emerald-600' : 'text-slate-800'}">${count}</span>
+                <span class="text-2xl font-bold ${isDone ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-800 dark:text-slate-100'}">${count}</span>
                 <span class="text-xs text-slate-400 font-medium">/ ${target}</span>
               </div>
               ${plusButtonHTML}
@@ -607,26 +646,26 @@
           card.innerHTML = `
             <div class="flex items-start justify-between gap-2 mb-3">
               <div>
-                <h3 class="font-semibold text-slate-800 text-base flex items-center gap-2">
+                <h3 class="font-semibold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2">
                   ${item.title}
-                  ${isDone ? '<span class="bg-emerald-100 text-emerald-700 text-xs px-2 py-0.5 rounded-full font-medium">Selesai</span>' : ''}
+                  ${isDone ? '<span class="bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 text-xs px-2 py-0.5 rounded-full font-medium">Selesai</span>' : ''}
                 </h3>
-                <p class="text-xs text-slate-500 mt-0.5">${item.note}</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${item.note}</p>
               </div>
               
-              <button onclick="speakArabic(\`${item.arabic}\`)" title="Dengarkan Pelafalan" class="p-1.5 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-100 transition">
+              <button onclick="speakArabic(\`${item.arabic}\`)" title="Dengarkan Pelafalan" class="p-1.5 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
               </button>
             </div>
 
-            <div class="font-arabic text-right ${arClass} text-slate-800 mb-3" dir="rtl">${item.arabic}</div>
+            <div class="font-arabic text-right ${arClass} text-slate-800 dark:text-slate-100 mb-3" dir="rtl">${item.arabic}</div>
 
-            <p class="${trClass} text-slate-600 mb-2 leading-relaxed italic">
+            <p class="${trClass} text-slate-600 dark:text-slate-300 mb-2 leading-relaxed italic">
               "${item.translation}"
             </p>
 
-            <p class="text-[11px] text-emerald-700 font-small mb-4 flex items-center gap-2">
-<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-700 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <p class="text-[11px] text-emerald-700 dark:text-emerald-400 font-small mb-4 flex items-center gap-2">
+<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-700 dark:text-emerald-400 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
   <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
 </svg>
@@ -635,7 +674,7 @@
 <span>${item.citation}</span>
 </p>
 
-            <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+            <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">
               ${actionGroup1}
               ${actionGroup2}
             </div>
@@ -656,6 +695,7 @@
       }
     });
 
+    applyTheme();
     render();
   </script>
 </body>
