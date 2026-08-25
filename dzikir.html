@@ -184,6 +184,18 @@
     </div>
   </div>
 
+  <!-- In-app alert / confirm (replaces window.alert / window.confirm) -->
+  <div id="appDialog" class="fixed inset-0 bg-slate-900/50 dark:bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4 hidden" role="dialog" aria-modal="true" aria-labelledby="appDialogTitle" aria-describedby="appDialogMessage">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl max-w-sm w-full p-6 space-y-4 border border-slate-100 dark:border-slate-700" onclick="event.stopPropagation()">
+      <h2 id="appDialogTitle" class="text-base font-bold text-slate-800 dark:text-slate-100">Pemberitahuan</h2>
+      <p id="appDialogMessage" class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+      <div class="flex gap-2 pt-1">
+        <button type="button" id="appDialogCancel" class="hidden flex-1 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold transition text-xs">Batal</button>
+        <button type="button" id="appDialogOk" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition text-xs">OK</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-center py-4 text-xs text-slate-500 dark:text-slate-400 mt-auto px-4">
     Berdasarkan Kitab <i>Hisnul Muslim</i> karya Syaikh Sa'id bin 'Ali bin Wahf al-Qahthani (Pustaka Ibnu 'Umar).
@@ -339,6 +351,44 @@
       }
     }
 
+    let appDialogResolver = null;
+
+    function closeAppDialog(result) {
+      document.getElementById('appDialog').classList.add('hidden');
+      if (appDialogResolver) {
+        const resolve = appDialogResolver;
+        appDialogResolver = null;
+        resolve(result);
+      }
+    }
+
+    function openAppDialog({ title, message, confirm }) {
+      return new Promise((resolve) => {
+        if (appDialogResolver) appDialogResolver(false);
+        appDialogResolver = resolve;
+
+        document.getElementById('appDialogTitle').textContent = title;
+        document.getElementById('appDialogMessage').textContent = message;
+
+        const overlay = document.getElementById('appDialog');
+        const cancelBtn = document.getElementById('appDialogCancel');
+        const okBtn = document.getElementById('appDialogOk');
+        cancelBtn.classList.toggle('hidden', !confirm);
+        okBtn.textContent = confirm ? 'Ya' : 'OK';
+
+        overlay.classList.remove('hidden');
+        okBtn.focus();
+      });
+    }
+
+    function showAppAlert(message) {
+      return openAppDialog({ title: 'Pemberitahuan', message, confirm: false });
+    }
+
+    function showAppConfirm(message) {
+      return openAppDialog({ title: 'Konfirmasi', message, confirm: true });
+    }
+
     function updateSettingsModalUI() {
       document.getElementById('settingViewText').textContent = settings.isCompactView ? 'Ringkas' : 'Lengkap';
       document.getElementById('settingSideText').textContent = settings.isControlOnLeft ? 'Kiri' : 'Kanan';
@@ -429,7 +479,7 @@
       }
 
       if (!supported) {
-        alert('Perangkat/penjelajah tidak mendukung getar atau audio chime.');
+        showAppAlert('Perangkat/penjelajah tidak mendukung getar atau audio chime.');
       }
     }
 
@@ -438,7 +488,7 @@
       if (navigator.vibrate) {
         navigator.vibrate([200, 60, 200]);
       } else {
-        alert('Getar tidak didukung pada perangkat ini.');
+        showAppAlert('Getar tidak didukung pada perangkat ini.');
       }
     }
 
@@ -449,10 +499,10 @@
           playBeepSound();
         } catch (e) {
           console.warn('Audio test failed', e);
-          alert('Pemutaran audio gagal.');
+          showAppAlert('Pemutaran audio gagal.');
         }
       } else {
-        alert('Audio tidak didukung pada perangkat ini.');
+        showAppAlert('Audio tidak didukung pada perangkat ini.');
       }
     }
 
@@ -687,8 +737,23 @@
       updateOverallProgress();
     }
 
-    document.getElementById('resetAllBtn').addEventListener('click', () => {
-      if (confirm('Apakah Anda yakin ingin mengulang semua hitungan?')) {
+    document.getElementById('appDialogOk').addEventListener('click', () => closeAppDialog(true));
+    document.getElementById('appDialogCancel').addEventListener('click', () => closeAppDialog(false));
+    document.getElementById('appDialog').addEventListener('click', (e) => {
+      if (e.target.id !== 'appDialog') return;
+      const isConfirm = !document.getElementById('appDialogCancel').classList.contains('hidden');
+      closeAppDialog(!isConfirm);
+    });
+    document.addEventListener('keydown', (e) => {
+      const overlay = document.getElementById('appDialog');
+      if (e.key !== 'Escape' || overlay.classList.contains('hidden')) return;
+      const isConfirm = !document.getElementById('appDialogCancel').classList.contains('hidden');
+      closeAppDialog(!isConfirm);
+    });
+
+    document.getElementById('resetAllBtn').addEventListener('click', async () => {
+      const ok = await showAppConfirm('Apakah Anda yakin ingin mengulang semua hitungan?');
+      if (ok) {
         userCounts = {};
         saveState();
         render();
