@@ -21,6 +21,109 @@
       line-height: 2.6;
       white-space: pre-line;
     }
+
+    @keyframes sparkle-fade {
+      0% {
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(calc(-50% + var(--spark-x)), calc(-50% + var(--spark-y))) scale(1.4) rotate(180deg);
+        opacity: 0;
+      }
+    }
+
+    .sparkle {
+      position: absolute;
+      pointer-events: none;
+      line-height: 1;
+      filter: drop-shadow(0 0 5px currentColor);
+      animation: sparkle-fade 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes card-slide-out-left {
+      to { transform: translateX(-110%); opacity: 0; }
+    }
+
+    @keyframes card-slide-out-right {
+      to { transform: translateX(110%); opacity: 0; }
+    }
+
+    @keyframes card-slide-in-right {
+      from { transform: translateX(40%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes card-slide-in-left {
+      from { transform: translateX(-40%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .card-slide-out {
+      animation: card-slide-out-left 0.35s ease-in forwards;
+    }
+
+    .card-slide-out-right {
+      animation: card-slide-out-right 0.35s ease-in forwards;
+    }
+
+    .card-slide-in {
+      animation: card-slide-in-right 0.35s ease-out;
+    }
+
+    .card-stage {
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+    }
+
+    .card-track {
+      --curr-scale: 1;
+      --curr-opacity: 1;
+      --prev-scale: 0.86;
+      --prev-opacity: 0.42;
+      --next-scale: 0.86;
+      --next-opacity: 0.42;
+      display: flex;
+      width: 300%;
+      will-change: transform;
+      transform: translateX(-33.333%);
+    }
+
+    .card-pane {
+      width: 33.333%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: stretch;
+    }
+
+    .card-pane-curr > *,
+    .card-pane-peek > * {
+      transform: scale(var(--pane-scale));
+      opacity: var(--pane-opacity);
+    }
+
+    .card-pane-curr > * {
+      --pane-scale: var(--curr-scale);
+      --pane-opacity: var(--curr-opacity);
+      transform-origin: center center;
+    }
+
+    .card-pane-peek-prev > * {
+      --pane-scale: var(--prev-scale);
+      --pane-opacity: var(--prev-opacity);
+      transform-origin: right center;
+    }
+
+    .card-pane-peek-next > * {
+      --pane-scale: var(--next-scale);
+      --pane-opacity: var(--next-opacity);
+      transform-origin: left center;
+    }
+
+    .card-track.is-settling .card-pane > * {
+      transition: transform 0.28s ease-out, opacity 0.28s ease-out;
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col font-sans">
@@ -105,14 +208,14 @@
         </div>
 
         <!-- Tampilan Mode -->
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="font-semibold text-slate-700 dark:text-slate-200">Mode Tampilan</div>
-            <div class="text-slate-400 dark:text-slate-500 text-[11px]">Ringkas (hanya judul) / Lengkap (dengan Arab & arti)</div>
+        <div>
+          <div class="font-semibold text-slate-700 dark:text-slate-200 mb-1">Mode Tampilan</div>
+          <div class="text-slate-400 dark:text-slate-500 text-[11px] mb-2">Ringkas (judul) / Lengkap (Arab & arti) / Kartu (satu per satu, ketuk kartu)</div>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" onclick="setViewMode('compact')" id="btn-view-compact" class="py-1.5 border dark:border-slate-600 rounded-lg font-medium text-center">Ringkas</button>
+            <button type="button" onclick="setViewMode('full')" id="btn-view-full" class="py-1.5 border dark:border-slate-600 rounded-lg font-medium text-center">Lengkap</button>
+            <button type="button" onclick="setViewMode('card')" id="btn-view-card" class="py-1.5 border dark:border-slate-600 rounded-lg font-medium text-center">Kartu</button>
           </div>
-          <button onclick="setSetting('isCompactView', !settings.isCompactView)" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 font-semibold rounded-lg text-emerald-700 dark:text-emerald-400 border border-slate-200 dark:border-slate-600">
-            <span id="settingViewText"></span>
-          </button>
         </div>
 
         <!-- Posisi Tombol Hitung -->
@@ -299,15 +402,30 @@
     let editingTargetId = null;
 
     // Application Settings with Defaults
+    const savedSettings = JSON.parse(localStorage.getItem('dzikir_settings') || '{}');
     let settings = Object.assign({
       isCompactView: false,
+      viewMode: 'full',              // compact | full | card
       isControlOnLeft: false,
       isDarkMode: false,
       arabicFontSize: 'medium',      // small (20px), medium (28px), large (36px)
       translationFontSize: 'medium', // small (12px), medium (14px), large (18px)
       enableVibration: true,
       enableSound: true
-    }, JSON.parse(localStorage.getItem('dzikir_settings') || '{}'));
+    }, savedSettings);
+
+    if (savedSettings.viewMode === undefined) {
+      settings.viewMode = savedSettings.isCompactView ? 'compact' : 'full';
+    }
+    if (!['compact', 'full', 'card'].includes(settings.viewMode)) {
+      settings.viewMode = 'full';
+    }
+    settings.isCompactView = settings.viewMode === 'compact';
+
+    let cardIndexByTab = JSON.parse(localStorage.getItem('dzikir_card_index') || '{}');
+    let cardEnterAnimation = null;
+    const sparkleIcons = ['✦', '✧', '★'];
+    const sparkleColors = ['#a7f3d0', '#6ee7b7', '#fde68a', '#fcd34d'];
 
     const synth = window.speechSynthesis;
 
@@ -330,6 +448,7 @@
       localStorage.setItem('dzikir_counts', JSON.stringify(userCounts));
       localStorage.setItem('dzikir_targets', JSON.stringify(userTargets));
       localStorage.setItem('dzikir_settings', JSON.stringify(settings));
+      localStorage.setItem('dzikir_card_index', JSON.stringify(cardIndexByTab));
       updateOverallProgress();
     }
 
@@ -339,6 +458,24 @@
       saveState();
       render();
       updateSettingsModalUI();
+    }
+
+    function setViewMode(mode) {
+      settings.viewMode = mode;
+      settings.isCompactView = mode === 'compact';
+      if (mode === 'card') {
+        const items = dzikirData[currentTab];
+        cardIndexByTab[currentTab] = firstIncompleteIndex(items);
+      }
+      saveState();
+      render();
+      updateSettingsModalUI();
+    }
+
+    function viewBtnClass(active) {
+      return active
+        ? "py-1.5 border rounded-lg font-bold text-center bg-emerald-600 text-white border-emerald-600"
+        : "py-1.5 border dark:border-slate-600 rounded-lg font-medium text-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800";
     }
 
     function toggleSettingsModal(show) {
@@ -390,7 +527,9 @@
     }
 
     function updateSettingsModalUI() {
-      document.getElementById('settingViewText').textContent = settings.isCompactView ? 'Ringkas' : 'Lengkap';
+      document.getElementById('btn-view-compact').className = viewBtnClass(settings.viewMode === 'compact');
+      document.getElementById('btn-view-full').className = viewBtnClass(settings.viewMode === 'full');
+      document.getElementById('btn-view-card').className = viewBtnClass(settings.viewMode === 'card');
       document.getElementById('settingSideText').textContent = settings.isControlOnLeft ? 'Kiri' : 'Kanan';
       document.getElementById('settingDarkText').textContent = settings.isDarkMode ? 'Aktif' : 'Nonaktif';
 
@@ -422,6 +561,104 @@
 
     function getCount(item) {
       return userCounts[item.id] || 0;
+    }
+
+    function firstIncompleteIndex(items) {
+      const i = items.findIndex(item => getCount(item) < getTarget(item));
+      return i === -1 ? items.length : i;
+    }
+
+    function nextIncompleteIndex(from) {
+      const items = dzikirData[currentTab];
+      for (let i = from + 1; i < items.length; i++) {
+        if (getCount(items[i]) < getTarget(items[i])) return i;
+      }
+      return items.length;
+    }
+
+    function createSparkle(card, x, y) {
+      const sparkle = document.createElement('span');
+      sparkle.className = 'sparkle text-sm select-none';
+      sparkle.textContent = sparkleIcons[Math.floor(Math.random() * sparkleIcons.length)];
+      sparkle.style.color = sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+      sparkle.style.left = x + 'px';
+      sparkle.style.top = y + 'px';
+      const angle = Math.random() * Math.PI * 2;
+      const velocity = 30 + Math.random() * 50;
+      sparkle.style.setProperty('--spark-x', Math.cos(angle) * velocity + 'px');
+      sparkle.style.setProperty('--spark-y', Math.sin(angle) * velocity + 'px');
+      card.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 700);
+    }
+
+    function spawnSparkles(card, clickEvent) {
+      const rect = card.getBoundingClientRect();
+      const x = clickEvent.clientX - rect.left;
+      const y = clickEvent.clientY - rect.top;
+      for (let i = 0; i < 8; i++) createSparkle(card, x, y);
+    }
+
+    const CARD_PEEK_SCALE = 0.86;
+    const CARD_PEEK_OPACITY = 0.42;
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    function applyCardPaneMorph(track, t) {
+      const towardNext = Math.max(0, Math.min(1, t));
+      const towardPrev = Math.max(0, Math.min(1, -t));
+      const leaving = Math.max(towardNext, towardPrev);
+      track.style.setProperty('--curr-scale', String(lerp(1, CARD_PEEK_SCALE, leaving)));
+      track.style.setProperty('--curr-opacity', String(lerp(1, CARD_PEEK_OPACITY, leaving)));
+      track.style.setProperty('--prev-scale', String(lerp(CARD_PEEK_SCALE, 1, towardPrev)));
+      track.style.setProperty('--prev-opacity', String(lerp(CARD_PEEK_OPACITY, 1, towardPrev)));
+      track.style.setProperty('--next-scale', String(lerp(CARD_PEEK_SCALE, 1, towardNext)));
+      track.style.setProperty('--next-opacity', String(lerp(CARD_PEEK_OPACITY, 1, towardNext)));
+    }
+
+    function setCardTrackPos(pos, withTransition, dragPx) {
+      const track = document.getElementById('cardTrack');
+      if (!track) return;
+      const stage = document.getElementById('cardStage');
+      const width = (stage && stage.clientWidth) || 1;
+      track.classList.toggle('is-settling', !!withTransition);
+      track.style.transition = withTransition ? 'transform 0.28s ease-out' : 'none';
+      let t = 0;
+      if (typeof dragPx === 'number') {
+        track.dataset.pos = 'drag';
+        track.style.transform = 'translateX(calc(-33.333% + ' + dragPx + 'px))';
+        t = Math.max(-1, Math.min(1, -dragPx / width));
+      } else {
+        track.dataset.pos = pos || 'center';
+        const map = { prev: '0%', center: '-33.333%', next: '-66.666%' };
+        track.style.transform = 'translateX(' + (map[pos] || map.center) + ')';
+        t = pos === 'next' ? 1 : pos === 'prev' ? -1 : 0;
+      }
+      applyCardPaneMorph(track, t);
+    }
+
+    function advanceCardAfterComplete() {
+      const track = document.getElementById('cardTrack');
+      const finish = () => {
+        cardIndexByTab[currentTab] = nextIncompleteIndex(cardIndexByTab[currentTab] || 0);
+        saveState();
+        render();
+      };
+      if (track) {
+        track.style.pointerEvents = 'none';
+        setCardTrackPos('next', true);
+        setTimeout(finish, 280);
+        return;
+      }
+      const card = document.getElementById('tasbihCard');
+      if (!card) {
+        finish();
+        return;
+      }
+      card.style.pointerEvents = 'none';
+      card.classList.add('card-slide-out');
+      setTimeout(finish, 350);
     }
 
     // Audio Chime Generator using Web Audio API
@@ -517,8 +754,153 @@
           triggerCompletionFeedback();
         }
 
+        if (settings.viewMode === 'card') {
+          const countEl = document.getElementById('tasbihCount');
+          if (countEl) {
+            countEl.textContent = next;
+            countEl.classList.add('scale-125');
+            setTimeout(() => countEl.classList.remove('scale-125'), 100);
+          }
+          updateOverallProgress();
+          if (next >= target) advanceCardAfterComplete();
+          return;
+        }
+
         render();
       }
+    }
+
+    function handleTasbihClick(event, id, target) {
+      const el = event.target && event.target.closest ? event.target : (event.target && event.target.parentElement);
+      if (el && el.closest('[data-no-count]')) return;
+      const current = userCounts[id] || 0;
+      if (current >= target) return;
+      const card = document.getElementById('tasbihCard');
+      if (card) spawnSparkles(card, event);
+      increment(id, target);
+    }
+
+    function goToPreviousCard() {
+      const items = dzikirData[currentTab];
+      let idx = cardIndexByTab[currentTab];
+      if (typeof idx !== 'number') idx = 0;
+      if (idx <= 0) {
+        const first = items[0];
+        if (first && getCount(first) > 0) {
+          userCounts[first.id] = 0;
+          saveState();
+          render();
+        } else {
+          setCardTrackPos('center', true);
+        }
+        return;
+      }
+
+      const prev = Math.min(idx, items.length) - 1;
+      const prevItem = items[prev];
+      userCounts[prevItem.id] = 0;
+      cardIndexByTab[currentTab] = prev;
+
+      const track = document.getElementById('cardTrack');
+      const finish = () => {
+        saveState();
+        render();
+      };
+      if (track) {
+        track.style.pointerEvents = 'none';
+        setCardTrackPos('prev', true);
+        setTimeout(finish, 280);
+        return;
+      }
+      const card = document.getElementById('tasbihCard');
+      if (!card) {
+        finish();
+        return;
+      }
+      card.style.pointerEvents = 'none';
+      card.classList.add('card-slide-out-right');
+      setTimeout(() => {
+        cardEnterAnimation = 'left';
+        finish();
+      }, 350);
+    }
+
+    function bindTasbihGestures(el, itemId, target) {
+      let startX = 0;
+      let startY = 0;
+      let tracking = false;
+      let swiped = false;
+      let axis = null;
+      const threshold = 56;
+
+      el.addEventListener('pointerdown', (e) => {
+        if (e.target.closest('[data-no-count]')) return;
+        tracking = true;
+        swiped = false;
+        axis = null;
+        startX = e.clientX;
+        startY = e.clientY;
+        try { el.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+
+      el.addEventListener('pointermove', (e) => {
+        if (!tracking) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        if (!axis) {
+          if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+          axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+        }
+        if (axis !== 'x') return;
+        e.preventDefault();
+        el.style.touchAction = 'none';
+        let x = dx;
+        const items = dzikirData[currentTab];
+        const idx = cardIndexByTab[currentTab] || 0;
+        if (x > 0 && idx <= 0) x *= 0.28;
+        if (x < 0 && idx >= items.length) x *= 0.28;
+        setCardTrackPos('center', false, x);
+      });
+
+      el.addEventListener('pointerup', (e) => {
+        if (!tracking) return;
+        tracking = false;
+        el.style.touchAction = '';
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        const usedX = axis === 'x';
+        axis = null;
+        if (!usedX || Math.abs(dx) < threshold || Math.abs(dx) <= Math.abs(dy)) {
+          setCardTrackPos('center', true);
+          return;
+        }
+        swiped = true;
+        if (dx < 0) {
+          if (itemId) handleTasbihClick(e, itemId, target);
+          const counted = itemId ? (userCounts[itemId] || 0) : 0;
+          if (!itemId || counted < target) setCardTrackPos('center', true);
+        } else {
+          goToPreviousCard();
+        }
+      });
+
+      el.addEventListener('pointercancel', () => {
+        tracking = false;
+        axis = null;
+        el.style.touchAction = '';
+        setCardTrackPos('center', true);
+      });
+
+      el.addEventListener('click', (e) => {
+        if (swiped) {
+          swiped = false;
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+        if (!itemId) return;
+        handleTasbihClick(e, itemId, target);
+      });
     }
 
     function resetSingle(id) {
@@ -561,6 +943,9 @@
 
     function switchTab(tab) {
       currentTab = tab;
+      if (settings.viewMode === 'card') {
+        cardIndexByTab[currentTab] = firstIncompleteIndex(dzikirData[currentTab]);
+      }
       saveState();
       render();
     }
@@ -589,6 +974,150 @@
       }
     }
 
+    function tasbihCardClass(interactive) {
+      return `relative overflow-hidden w-full h-full text-left rounded-2xl p-5 sm:p-7 min-h-[20rem] border shadow-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 ${interactive ? 'cursor-pointer select-none touch-pan-y' : 'pointer-events-none'}`;
+    }
+
+    function dzikirCardBodyHTML(item, idx, total, count, target, withControls) {
+      const arClass = getFontSizeClass('arabic', settings.arabicFontSize);
+      const trClass = getFontSizeClass('translation', settings.translationFontSize);
+      const countId = withControls ? 'id="tasbihCount"' : '';
+      const controls = withControls ? `
+          <p class="text-[11px] text-slate-400">Ketuk atau geser kiri untuk menghitung · Geser kanan untuk kartu sebelumnya</p>
+          <div data-no-count class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">
+            <button type="button" onclick="event.stopPropagation(); speakArabic(\`${item.arabic}\`)" title="Dengarkan Pelafalan" class="p-1.5 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+            </button>
+            <div class="flex items-center gap-1">
+              ${editingTargetId === item.id ? `
+                <input id="input-${item.id}" type="number" min="1" value="${target}" class="w-12 bg-white dark:bg-slate-800 border border-emerald-500 rounded px-1 py-0.5 text-center font-bold text-xs text-slate-700 dark:text-slate-100 focus:outline-none">
+                <button type="button" onclick="event.stopPropagation(); saveTargetInput('${item.id}', document.getElementById('input-${item.id}').value)" class="bg-emerald-600 text-white text-[10px] px-2 py-1 rounded">Simpan</button>
+              ` : ''}
+              <button type="button" onclick="event.stopPropagation(); toggleEditTarget('${item.id}')" title="Ubah Target" class="p-1.5 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+              </button>
+              <button type="button" onclick="event.stopPropagation(); resetSingle('${item.id}')" title="Reset Hitungan Ini" class="p-1.5 text-slate-400 hover:text-red-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              </button>
+            </div>
+          </div>` : '';
+      return `
+        <div class="absolute -top-12 -right-12 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="relative z-10 space-y-4">
+          <div class="flex items-start justify-between gap-3">
+            <div class="min-w-0">
+              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-1">Kartu ${idx + 1} dari ${total}</p>
+              <h3 class="font-semibold text-slate-800 dark:text-slate-100 text-base">${item.title}</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${item.note}</p>
+            </div>
+            <div class="flex flex-col items-end shrink-0">
+              <span ${countId} class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono leading-none transition-transform duration-100">${count}</span>
+              <span class="text-[10px] tracking-wider uppercase text-slate-400 font-semibold mt-1">/ ${target}</span>
+            </div>
+          </div>
+          <div class="font-arabic text-right ${arClass} text-slate-800 dark:text-slate-100" dir="rtl">${item.arabic}</div>
+          <p class="${trClass} text-slate-600 dark:text-slate-300 leading-relaxed italic">"${item.translation}"</p>
+          <p class="text-[11px] text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>
+            <span>${item.citation}</span>
+          </p>
+          ${controls}
+        </div>
+      `;
+    }
+
+    function donePanelInnerHTML() {
+      return `
+        <p class="text-2xl">✨</p>
+        <h2 class="text-base font-bold text-slate-800 dark:text-slate-100">Semua dzikir selesai</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Alhamdulillah. Geser kanan untuk kartu sebelumnya, atau reset hitungan untuk mengulang.</p>
+      `;
+    }
+
+    function fillPeekPane(pane, item, idx, total, countOverride) {
+      if (!item) return;
+      const card = document.createElement('div');
+      card.className = tasbihCardClass(false);
+      card.setAttribute('aria-hidden', 'true');
+      const target = getTarget(item);
+      const count = countOverride !== undefined ? countOverride : getCount(item);
+      card.innerHTML = dzikirCardBodyHTML(item, idx, total, count, target, false);
+      pane.appendChild(card);
+    }
+
+    function renderCardView(container, items) {
+      let idx = cardIndexByTab[currentTab];
+      if (typeof idx !== 'number' || idx < 0) idx = firstIncompleteIndex(items);
+      if (idx < items.length && getCount(items[idx]) >= getTarget(items[idx])) {
+        idx = nextIncompleteIndex(idx);
+      }
+      cardIndexByTab[currentTab] = idx;
+
+      const stage = document.createElement('div');
+      stage.id = 'cardStage';
+      stage.className = 'card-stage max-w-3xl mx-auto';
+
+      const track = document.createElement('div');
+      track.id = 'cardTrack';
+      track.className = 'card-track';
+      track.dataset.pos = 'center';
+
+      const prevPane = document.createElement('div');
+      prevPane.className = 'card-pane card-pane-peek card-pane-peek-prev pr-2';
+      const currPane = document.createElement('div');
+      currPane.className = 'card-pane card-pane-curr';
+      const nextPane = document.createElement('div');
+      nextPane.className = 'card-pane card-pane-peek card-pane-peek-next pl-2';
+
+      const prevIdx = idx > 0 ? Math.min(idx, items.length) - 1 : -1;
+      if (prevIdx >= 0) fillPeekPane(prevPane, items[prevIdx], prevIdx, items.length, 0);
+
+      if (idx >= items.length) {
+        const done = document.createElement('div');
+        done.id = 'tasbihCard';
+        done.className = tasbihCardClass(true) + ' flex flex-col items-center justify-center text-center space-y-2';
+        done.innerHTML = donePanelInnerHTML();
+        bindTasbihGestures(done, null, 0);
+        currPane.appendChild(done);
+      } else {
+        const item = items[idx];
+        const count = getCount(item);
+        const target = getTarget(item);
+        const card = document.createElement('div');
+        card.id = 'tasbihCard';
+        card.setAttribute('role', 'button');
+        card.tabIndex = 0;
+        card.className = tasbihCardClass(true);
+        card.innerHTML = dzikirCardBodyHTML(item, idx, items.length, count, target, true);
+        bindTasbihGestures(card, item.id, target);
+        card.addEventListener('keydown', (e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          if (e.target !== card) return;
+          e.preventDefault();
+          const rect = card.getBoundingClientRect();
+          handleTasbihClick({ clientX: rect.left + rect.width / 2, clientY: rect.top + rect.height / 2, target: card }, item.id, target);
+        });
+        currPane.appendChild(card);
+
+        const nextIdx = nextIncompleteIndex(idx);
+        if (nextIdx < items.length) {
+          fillPeekPane(nextPane, items[nextIdx], nextIdx, items.length);
+        } else {
+          const donePeek = document.createElement('div');
+          donePeek.className = tasbihCardClass(false) + ' flex flex-col items-center justify-center text-center space-y-2';
+          donePeek.setAttribute('aria-hidden', 'true');
+          donePeek.innerHTML = donePanelInnerHTML();
+          nextPane.appendChild(donePeek);
+        }
+      }
+
+      track.appendChild(prevPane);
+      track.appendChild(currPane);
+      track.appendChild(nextPane);
+      stage.appendChild(track);
+      container.appendChild(stage);
+    }
+
     function render() {
       ['shalat', 'pagi', 'petang'].forEach(t => {
         const btn = document.getElementById(`tab-${t}`);
@@ -603,6 +1132,12 @@
       container.innerHTML = '';
 
       const items = dzikirData[currentTab];
+
+      if (settings.viewMode === 'card') {
+        renderCardView(container, items);
+        updateOverallProgress();
+        return;
+      }
 
       items.forEach(item => {
         const count = getCount(item);
@@ -649,7 +1184,7 @@
         const arClass = getFontSizeClass('arabic', settings.arabicFontSize);
         const trClass = getFontSizeClass('translation', settings.translationFontSize);
 
-        if (settings.isCompactView) {
+        if (settings.viewMode === 'compact') {
           const leftElement = settings.isControlOnLeft ? plusButtonHTML : editResetHTML;
           const rightElement = settings.isControlOnLeft ? editResetHTML : plusButtonHTML;
 
@@ -755,6 +1290,7 @@
       const ok = await showAppConfirm('Apakah Anda yakin ingin mengulang semua hitungan?');
       if (ok) {
         userCounts = {};
+        cardIndexByTab = { shalat: 0, pagi: 0, petang: 0 };
         saveState();
         render();
       }
