@@ -124,9 +124,15 @@
     .card-track.is-settling .card-pane > * {
       transition: transform 0.28s ease-out, opacity 0.28s ease-out;
     }
+
+    @media (min-width: 768px) {
+      .card-stage {
+        overflow: visible;
+      }
+    }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col font-sans">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col font-sans overflow-x-hidden">
 
   <!-- Header -->
   <header class="bg-emerald-700 text-white shadow-md sticky top-0 z-50">
@@ -1055,7 +1061,7 @@
 
       const stage = document.createElement('div');
       stage.id = 'cardStage';
-      stage.className = 'card-stage max-w-3xl mx-auto';
+      stage.className = 'card-stage max-w-6xl mx-auto';
 
       const track = document.createElement('div');
       track.id = 'cardTrack';
@@ -1130,6 +1136,8 @@
 
       const container = document.getElementById('dzikirContainer');
       container.innerHTML = '';
+      container.classList.toggle('max-w-6xl', settings.viewMode === 'card');
+      container.classList.toggle('max-w-3xl', settings.viewMode !== 'card');
 
       const items = dzikirData[currentTab];
 
