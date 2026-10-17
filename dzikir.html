@@ -94,7 +94,7 @@
       width: 33.333%;
       flex-shrink: 0;
       display: flex;
-      align-items: stretch;
+      align-items: flex-start;
     }
 
     .card-pane-curr > *,
@@ -975,7 +975,7 @@
     }
 
     function tasbihCardClass(interactive) {
-      return `relative overflow-hidden w-full h-full text-left rounded-2xl p-5 sm:p-7 min-h-[20rem] border shadow-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 ${interactive ? 'cursor-pointer select-none touch-pan-y' : 'pointer-events-none'}`;
+      return `relative overflow-hidden w-full text-left rounded-2xl p-5 sm:p-7 min-h-[20rem] border shadow-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 ${interactive ? 'cursor-pointer select-none touch-pan-y' : 'pointer-events-none'}`;
     }
 
     function dzikirCardBodyHTML(item, idx, total, count, target, withControls) {
@@ -1146,7 +1146,7 @@
         const isEditing = editingTargetId === item.id;
 
         const card = document.createElement('div');
-        card.className = `rounded-xl shadow-sm border transition-all duration-200 p-4 sm:p-5 ${
+        card.className = `rounded-xl shadow-sm border transition-all duration-200 p-4 sm:p-5 ${settings.viewMode === 'full' ? 'flex flex-col min-h-[24rem]' : ''} ${
           isDone
             ? 'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/40 dark:border-emerald-600'
             : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
@@ -1259,7 +1259,7 @@
 <span>${item.citation}</span>
 </p>
 
-            <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">
+              <div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">
               ${actionGroup1}
               ${actionGroup2}
             </div>
